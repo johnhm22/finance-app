@@ -1,0 +1,20 @@
+
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "johnm",
+    "password": "password"
+}
+
+###
+
+GET http://localhost:3000/logout
+Content-Type: application/json
+
+###
+GET http://api.marketstack.com/v1/tickers?search=SMT&access_key=6658f5c2f61c27c847e0aa612d7ff3ea&limit=5
+
+
+
