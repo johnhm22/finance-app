@@ -1,14 +1,15 @@
-import { ILoginForm } from '@/types';
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+import { ILoginForm } from '@/types';
+
 const prisma = new PrismaClient();
 
-export async function POST(request: Request) {
-  const data: ILoginForm = await request.json();
+export async function POST(req: NextRequest, res: NextResponse) {
+  const data: ILoginForm = await req.json();
   const { username, password } = data;
   try {
     const user = await prisma.user.findUnique({

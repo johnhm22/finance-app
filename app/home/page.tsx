@@ -3,99 +3,144 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { IAddShareForm, IShareUpdateForm } from '@/types';
+import {
+  AddShareForm,
+  ShareEditForm,
+  QuoteResponse,
+  TickerSearchData,
+  IShareDataToEdit,
+} from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
 import Edit from '../components/Edit';
 import AddShare from '../components/AddShare';
-import { findTicker } from '@/utils/ticker.search.helper';
+import { findTicker } from '@/app/utils/ticker.search.helper';
+import { fakeTickerData } from '@/app/utils/fakeTickerData';
+import { useGlobalContext } from '../components/UserContext';
+import Button from '../components/Button';
+import { decimalFormatter } from '../utils/numberFormat.helper';
 
 interface IShareData {
+  id: string;
   longName: string;
   regularMarketPrice: number;
   symbol: string;
+  bookCost: number;
+  quantity: number;
 }
 
-const Home = () => {
+const page = () => {
+  const { payloadData } = useGlobalContext();
   const [underline, setUnderline] = useState<string>('investments');
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showAddShare, setShowAddShare] = useState<boolean>(false);
   const [bookCost, setBookCost] = useState<number>(400);
   const [shareData, setShareData] = useState<IShareData[]>();
 
-  const handleUnderline = () => {
-    if (underline === 'investments') {
-      setUnderline('orders');
-    } else {
-      setUnderline('investments');
-    }
-  };
+  // const handleUnderline = () => {
+  //   if (underline === 'investments') {
+  //     setUnderline('orders');
+  //   } else {
+  //     setUnderline('investments');
+  //   }
+  // };
 
-  const [shareUpdateForm, setShareUpdateForm] = React.useState<
-    IShareUpdateForm[]
-  >([]);
+  const [shareEditForm, setShareEditForm] = React.useState<ShareEditForm[]>([]);
 
-  const [addShareForm, setAddShareForm] = React.useState<IAddShareForm[]>([]);
+  const [addShareForm, setAddShareForm] = React.useState<AddShareForm>({
+    bookCost: 0,
+    quantity: 0,
+    ticker: {
+      country: '',
+      has_eod: false,
+      has_intraday: false,
+      share_name: '',
+      symbol: '',
+      stock_exchange: {
+        exchange_acronym: '',
+        exchange_city: '',
+        exchange_country: '',
+        country_code: '',
+        mic: '',
+        exchange_name: '',
+        website: '',
+      },
+    },
+    userId: '',
+  });
 
-  // const setNewMemberInviteForm: React.Dispatch<React.SetStateAction<IInviteUserForm>>
-
-  // const [newMemberInviteForm, setNewMemberInviteForm] =
-  // React.useState<IInviteUserForm>({
-  //   firstName: "",
-  //   email: "",
-  //   userRole: "PARENT",
-  //   studentUserId: "",
-  // });
-
-  // useEffect(() => {
-  //   //call function that gets price of smt.l
-  //   console.log('useEffect called');
-  //   const getQuote = async () => {
-  //     try {
-  //       const response = await fetch(`api/quote/smt.l`);
-  //       console.log('response.body.getReader(): ', response.body?.getReader());
-  //     } catch {}
-  //   };
-  //   getQuote();
-  // });
-
-  const getQuote = async () => {
-    try {
-      const response = await axios.get(`api/quote`);
-      const data = response.data.quoteResponse.result;
-
-      const dataArray: IShareData[] = [];
-
-      data.map((d: IShareData) => {
-        dataArray.push({
-          longName: d.longName,
-          regularMarketPrice: d.regularMarketPrice,
-          symbol: d.symbol,
-        });
-      });
-
-      setShareData(dataArray);
-
-      //map over response.data.quoteResponse.result and enter into setShareData
-
-      // setShareData({
-      //   longName: response.data.price.longName,
-      //   price: response.data.price.regularMarketPrice.raw,
-      //   symbol: response.data.price.symbol,
-      // });
-    } catch (error) {
-      console.log('Error: ', error);
-    }
-  };
+  const [shareDataToEdit, setShareDataToEdit] = useState<IShareDataToEdit[]>(
+    []
+  );
 
   useEffect(() => {
     getQuote();
-  }, []);
+  }, [payloadData]);
+
+  const userId = 'b8d4f591-46fd-485f-9ec3-de7823b93ca6';
+
+  const totalCost = shareData?.reduce(
+    (accumVal: number, currVal: IShareData) => {
+      return accumVal + currVal.bookCost;
+    },
+    0
+  );
+
+  console.log('totalCost: ', totalCost);
+
+  //can I make getQuote a server action and import it?
+  const getQuote = async () => {
+    if (payloadData) {
+      try {
+        const response = await axios({
+          method: 'GET',
+          url: `api/quote/${userId}`,
+          // url: `api/share/${userId}`,
+        });
+        setShareData(response.data.stocksHeld);
+
+        //write reduce function to get total cost of shares
+
+        // const returnedShareData = response.data.result.data;
+
+        // console.log('data from getQuote: ', returnedShareData);
+        // const dataArray: IShareData[] = [];
+
+        // data.map((d: IShareData) => {
+        //   dataArray.push({
+        //     longName: d.longName,
+        //     regularMarketPrice: d.regularMarketPrice,
+        //     symbol: d.symbol,
+        //   });
+        // });
+
+        // setShareData(returnedShareData);
+
+        //map over response.data.quoteResponse.result and enter into setShareData
+
+        // setShareData({
+        //   longName: response.data.price.longName,
+        //   price: response.data.price.regularMarketPrice.raw,
+        //   symbol: response.data.price.symbol,
+        // });
+      } catch (error) {
+        console.log('Error: ', error);
+      }
+    }
+  };
+
+  console.log('shareData: ', shareData);
+
+  // useEffect(() => {
+  //   getQuote();
+  // }, [payloadData]);
+
+  // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 
   const tickerSearch = async (data: string) => {
-    const response = await findTicker(data);
-    console.log('response from tickerSearch in page.tsx: ', response);
-    return response;
+    // const response = await findTicker(data);
+    // return response;
+    if (fakeTickerData) return fakeTickerData;
   };
 
   // const debouncedSearch = debounce((arg) => {
@@ -121,18 +166,42 @@ const Home = () => {
     setShowAddShare(false);
   };
 
-  const handleShowEdit = () => {
+  const handleShowEdit = (
+    symbol: string,
+    bookCost: number,
+    quantity: number
+  ) => {
+    console.log('symbol, bookCost, quantity: ', symbol, bookCost, quantity);
+    // setShareDataToEdit((prevStat) => [
+    //   ...prevStat,
+    //   { symbol: symbol, bookCost: bookCost, quantity: quantity },
+    // ]);
+    setShareDataToEdit([
+      { symbol: symbol, bookCost: bookCost, quantity: quantity },
+    ]);
     setShowEdit((prevState) => !prevState);
   };
 
-  const handleDelete = (symbol: string) => {
-    console.log('Delete data for this symbol', symbol);
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await axios({
+        url: `api/share/${id}`,
+        method: 'DELETE',
+      });
+
+      setShareData(
+        shareData?.filter((data) => {
+          data.id !== id;
+        })
+      );
+    } catch (e) {
+      console.log('Deletion error: ', e);
+    }
+
+    //update share data by using filter to remove deleted share.
   };
 
-  const onSubmit = (shareUpdateForm: IShareUpdateForm[], ticker: string) => {
-    console.log('shareUpdateForm', shareUpdateForm);
-    console.log('ticker: ', ticker);
-
+  const onSubmit = (shareEditForm: ShareEditForm[], ticker: string) => {
     //filter out shareholding being updated
     //add in data on edited shareholding
 
@@ -146,8 +215,82 @@ const Home = () => {
     setShowEdit(false);
   };
 
-  const onConfirmAddShare = (addShareForm: IAddShareForm[]) => {
-    console.log('addShareForm: ', addShareForm);
+  //from nitro
+  // const addNewContribution = async (
+  //   studentId: string,
+  //   formData: IAddExtraContributionForm
+  // ): Promise<IExtraContribution | null> => {
+  //   try {
+  //     const { name, amount, startDate, endDate, frequency } = formData;
+  //     const response = await Axios({
+  //       method: "POST",
+  //       url: `/api/contribution/${studentId}`,
+  //       data: {
+  //         name,
+  //         amount: Number(amount),
+  //         frequency,
+  //         startDate,
+  //         endDate,
+  //       },
+  //     });
+
+  const onConfirmAddShare = async (
+    addShareForm: AddShareForm,
+    userId: string
+  ) => {
+    try {
+      console.log('add share called');
+      console.log('userId: ', userId);
+      console.log('addShareForm: ', addShareForm);
+      const { bookCost, quantity } = addShareForm;
+      const { share_name, symbol } = addShareForm.ticker;
+      const {
+        exchange_acronym,
+        exchange_city,
+        exchange_country,
+        exchange_name,
+      } = addShareForm.ticker.stock_exchange;
+      const response = await axios({
+        method: 'POST',
+        url: 'api/share',
+        data: {
+          symbol,
+          share_name,
+          exchange_acronym,
+          exchange_name,
+          exchange_country,
+          exchange_city,
+          bookCost: +bookCost,
+          quantity: +quantity,
+          userId,
+        },
+      });
+    } catch (e) {
+      console.log('Error: ', e);
+    }
+    //need to close form
+    setShowAddShare(false);
+    setAddShareForm({
+      bookCost: 0,
+      quantity: 0,
+      ticker: {
+        country: '',
+        has_eod: false,
+        has_intraday: false,
+        share_name: '',
+        symbol: '',
+        stock_exchange: {
+          exchange_acronym: '',
+          exchange_city: '',
+          exchange_country: '',
+          country_code: '',
+          mic: '',
+          exchange_name: '',
+          website: '',
+        },
+      },
+      userId: '',
+    });
   };
 
   // const handleAddNewCollege = async (formData: IAddCollegeForm) => {
@@ -161,50 +304,62 @@ const Home = () => {
   // return newCollege;
   // };
 
+  const totalValue = 283000;
+
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24 bg-slate-200'>
-      <div className=''>
+    <main className='flex h-screen flex-col items-center bg-slate-200'>
+      <div className='flex flex-row w-11/12 md:w-2/3 bg-white justify-between px-2 py-5 items-center mt-28 drop-shadow-md'>
+        <p className='font-semibold items-center'>Summary</p>
+        <div className='flex flex-col'>
+          <p className=''>Total Value</p>
+          <p className='font-semibold'>£ {decimalFormatter(totalValue)}</p>
+        </div>
+
+        <div className='flex flex-col'>
+          {' '}
+          <p className=''>Total Cost</p>
+          <p className='font-semibold'>£ {decimalFormatter(totalCost!)}</p>
+        </div>
+
+        <div>
+          {' '}
+          <p className=''>Profit/Loss</p>
+          <p className='font-semibold'>
+            £ {decimalFormatter(totalValue - totalCost!)}
+          </p>
+        </div>
+      </div>
+      <div className='bg-white drop-shadow-md  w-11/12 md:w-2/3 mt-5 px-2 py-5 overflow-auto'>
         <div className='flex flex-col'>
           <div className='flex flex-row'>
             {underline === 'investments' ? (
               <>
-                <h2
-                  className={
-                    'font-semibold text-base pb-2 mr-2  decoration-indigo-500 decoration-4 underline underline-offset-4'
-                  }
-                >
+                <h2 className={'font-semibold text-base pb-2 mr-2'}>
                   {' '}
                   Investments
-                </h2>
-                <h2
-                  className={'font-normal text-base pb-2 mr-2 '}
-                  onClick={handleUnderline}
-                >
-                  {' '}
-                  Orders
                 </h2>
               </>
             ) : (
               <>
                 <h2
                   className={'font-normal text-base pb-2 mr-2'}
-                  onClick={handleUnderline}
+                  // onClick={handleUnderline}
                 >
                   Investments
                 </h2>
-                <h2
+                {/* <h2
                   className={
                     'font-semibold text-base pb-2 mr-2  decoration-indigo-500 decoration-4 underline underline-offset-4'
                   }
                 >
                   Orders
-                </h2>
+                </h2> */}
               </>
             )}
           </div>
           <div className='flex flex-row text-xs'>
             <div className='basis-3/4 flex flex-row'>
-              <Image
+              {/* <Image
                 className='pb-2 mr-1'
                 src='./dots.svg'
                 alt='dots'
@@ -212,26 +367,27 @@ const Home = () => {
                 height={10}
               />
               <h2 className='font-semibold mr-2'>Group by</h2>
-              <h2 className='pb-2'>All</h2>
+              <h2 className='pb-2'>All</h2> */}
+              {/* <p className='flex text-red-400'>Updated at {Date()}</p> */}
             </div>
-            <div className='text-xs justify-end basis-1/4 text-right'>end</div>
           </div>
         </div>
-        <table className='table-auto border-separate'>
+        <table className='border-separate w-full '>
           <thead>
-            <tr className='bg-indigo-200 font-semibold text-xs'>
-              <th className='p-2'>Symbol/Name</th>
-              <th className='p-2'>Quantity</th>
-              <th className='p-2'>Book Cost</th>
+            <tr className='bg-indigo-50 font-semibold text-xs'>
+              <th className='p-2 w-40'>Symbol/Name</th>
+              <th className='p-2 w-32'>Quantity</th>
+              <th className='p-2 w-32'>Book Cost</th>
               <th className='p-2'>Price</th>
               <th className=' p-2'>Value</th>
-              <th className=' bg-slate-200 p-2'></th>
-              <th className=' bg-slate-200 p-2'></th>
+              <th className=' bg-white'></th>
             </tr>
           </thead>
           <tbody>
             {shareData?.map((data) => (
-              <tr key={uuidv4()} className='text-blue-500 font-bold text-sm'>
+              /* {fakeTickerData?.map((data) => ( */
+              // <tr key={uuidv4()} className='text-blue-700 font-bold text-sm'>
+              <tr key={data.id} className='text-blue-700 font-bold text-sm'>
                 <td className='flex flex-row'>
                   <Image
                     className='mr-1'
@@ -243,80 +399,77 @@ const Home = () => {
                   <div className='flex flex-col'>
                     {data.symbol}
                     <p className='text-black text-xs font-normal'>
-                      {data.longName}
+                      Company name
                     </p>
                   </div>
                 </td>
-                <td className='text-black font-normal text-xs text-end'>
-                  1053
+                <td className='text-black font-normal text-xs text-end pr-2'>
+                  {data.quantity}
                 </td>
-                <td className='text-black font-normal text-xs text-end'>
-                  {bookCost}p
+                <td className='text-black font-normal text-xs text-end pr-2'>
+                  {data.bookCost}p
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                  {data.regularMarketPrice}
+                  £0
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
                   £4,742.86
                 </td>
-                <td className='text-black font-normal text-xs text-center'>
+                <td className='flex flex-row gap-2 text-black font-normal w-6 text-xs text-center'>
                   <Image
                     className='ml-1 cursor-pointer'
                     src='./edit.svg'
                     alt='edit'
-                    width={10}
-                    height={20}
-                    onClick={handleShowEdit}
+                    width={15}
+                    height={25}
+                    onClick={() => handleShowEdit(data.symbol, 33, 7)}
                   />
-                </td>
-                <td className='text-black font-normal text-xs text-center'>
                   <Image
                     className='ml-1 cursor-pointer'
                     src='./trash-icon.svg'
                     alt='edit'
-                    width={25}
-                    height={25}
-                    onClick={() => handleDelete(data.symbol)}
+                    width={35}
+                    height={35}
+                    onClick={() => handleDelete(data.id)}
                   />
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
-        {showEdit ? (
-          <Edit
-            handleCloseEdit={handleCloseEdit}
-            onSubmit={onSubmit}
-            shareUpdateForm={shareUpdateForm!}
-            setShareUpdateForm={setShareUpdateForm}
-            ticker='SMT.l'
-          />
-        ) : null}
-        {showAddShare ? (
-          <AddShare
-            handleCloseAddShare={handleCloseAddShare}
-            onSubmit={onConfirmAddShare}
-            addShareForm={addShareForm}
-            setAddShareForm={setAddShareForm}
-            tickerSearch={tickerSearch}
-          />
-        ) : null}
-        <div className='self-end flex gap-1 items-center justify-end mt-3'>
+        </table>{' '}
+        <div className='self-end flex items-center justify-end mt-3'>
           {' '}
-          <div className='self-end flex items-center justify-end'>
-            {' '}
-            <button
-              type='submit'
-              className='bg-green-400 rounded p-1 hover:bg-green-500 text-xs'
-              onClick={() => setShowAddShare(true)}
-            >
-              Add New Share
-            </button>
-          </div>
+          <Button
+            label='Add New Share'
+            backgroundColour='bg-green-400'
+            textColour='text-black'
+            onClick={() => setShowAddShare(true)}
+          />
         </div>
       </div>
+      {/* <div className='flex flex-1 bg-red-300 w-3/5 absolute items-center justify-center mt-8 h-2/3'> */}
+      {showEdit ? (
+        <Edit
+          handleCloseEdit={handleCloseEdit}
+          onSubmit={onSubmit}
+          shareEditForm={shareEditForm!}
+          setShareEditForm={setShareEditForm}
+          ticker='SMT.l'
+          shareDataToEdit={shareDataToEdit}
+        />
+      ) : null}
+      {showAddShare ? (
+        <AddShare
+          handleCloseAddShare={handleCloseAddShare}
+          onSubmit={onConfirmAddShare}
+          addShareForm={addShareForm}
+          setAddShareForm={setAddShareForm}
+          tickerSearch={tickerSearch}
+        />
+      ) : null}
+      {/* </div> */}
     </main>
   );
 };
 
-export default Home;
+export default page;

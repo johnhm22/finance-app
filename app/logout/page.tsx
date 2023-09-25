@@ -1,40 +1,17 @@
-'use client';
+'use server';
 
 import React from 'react';
+
 import Logout from '../components/Logout';
-import axios from 'axios';
-import { cookies } from 'next/headers';
 
 const page = () => {
-  console.log('logout page called');
-  // const logoutUser = async () => {
-
-  const onLogout = async () => {
-    try {
-      await axios({
-        method: 'GET',
-        url: 'api/logout',
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // try {
-  //   const response = await axios({
-  //     url: 'api/logout',
-  //     method: 'GET',
-  //   });
-  //   return response.data;
-  // } catch (e) {
-  //   console.log('Error: ', e);
-  //   return null;
-  // }
-  // };
-
-  // return <Logout logoutUser={logoutUser} />;
-
-  return <Logout onLogout={onLogout} />;
+  return (
+    <div className='flex max-container h-screen bg-slate-100 items-center justify-center'>
+      <div className='flex justify-center w-3/5 h-3/4'>
+        <Logout />
+      </div>
+    </div>
+  );
 };
 
 export default page;

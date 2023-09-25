@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 
-import { IRegisterForm } from '@/types';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
+
+import { validateRegistration } from '@/app/validations/api-validations/register';
+import { IRegisterForm } from '@/types';
 
 const prisma = new PrismaClient();
 
@@ -11,6 +13,16 @@ export async function POST(request: Request) {
   const data: IRegisterForm = await request.json();
   try {
     const { username, password, lastName, firstName } = data;
+    const result = validateRegistration(
+      username,
+      password,
+      lastName,
+      firstName
+    );
+    const { errors, isValid } = result;
+    if (!isValid) {
+      throw new Error('Invalid data', errors);
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10); //generates salt and then hashedPassword
 
@@ -22,39 +34,8 @@ export async function POST(request: Request) {
         password: hashedPassword,
       },
     });
-    console.log('user: ', user);
   } catch (error) {
     console.log('Error: ', error);
   }
   return NextResponse.json({ message: 'user created' });
-
-  //   try {
-
-  //use local db with prisma
-
-  //     const result = await axios(url, {
-  //       method: 'GET',
-  //       headers: {
-  //         'X-RapidAPI-Key': process.env.API_KEY!,
-  //         'X-RapidAPI-Host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-  //       },
-  //     });
-  //     // return result.data.price;
-  //     return new Response(JSON.stringify(result.data), { status: 200 });
-  //   } catch (error) {
-  //     console.log('Error: ', error);
-  //   }
-
-  //   try {
-  //     const res = await fetch(url, {
-  //       method: 'GET',
-  //       headers: {
-  //         'X-RapidAPI-Key': process.env.API_KEY!,
-  //         'X-RapidAPI-Host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-  //       },
-  //     });
-  //     return res.json();
-  //   } catch (error) {
-  //     console.log('Error: ', error);
-  //   }
 }

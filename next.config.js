@@ -5,9 +5,9 @@ const nextConfig = {
   //   contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   //   domains: ["http://www.w3.org/2000/svg"],
   // },
-  // experimental: {
-  //   serverActions: true,
-  // },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

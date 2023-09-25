@@ -1,30 +1,38 @@
-import React, { FormEvent, FormEventHandler } from 'react';
+import React, { FormEvent, FormEventHandler, useRef } from 'react';
 // import Image from 'next/image';
 
-import { IShareUpdateForm } from '@/types';
+import { IShareDataToEdit, ShareEditForm } from '@/types';
+import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 interface IProps {
   handleCloseEdit: () => void;
-  onSubmit: (arg: IShareUpdateForm[], ticker: string) => void;
-  setShareUpdateForm: React.Dispatch<React.SetStateAction<IShareUpdateForm[]>>;
-  shareUpdateForm: IShareUpdateForm[];
+  onSubmit: (arg: ShareEditForm[], ticker: string) => void;
+  setShareEditForm: React.Dispatch<React.SetStateAction<ShareEditForm[]>>;
+  shareEditForm: ShareEditForm[];
   ticker: string;
+  shareDataToEdit: IShareDataToEdit[];
 }
 
 const Edit = ({
   handleCloseEdit,
   onSubmit,
-  setShareUpdateForm,
-  shareUpdateForm,
+  setShareEditForm,
+  shareEditForm,
   ticker,
+  shareDataToEdit,
 }: IProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    setShareUpdateForm((prevState) => ({
+    setShareEditForm((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
+
+  console.log('shareDataToEdit: ', shareDataToEdit);
+
+  const editShareComponentRef = useRef(null);
+  closeOnOutsideClick(editShareComponentRef, handleCloseEdit);
 
   // const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const { value, name } = e.target;
@@ -34,76 +42,65 @@ const Edit = ({
   //   }));
   // };
 
-  const handleClose = () => {
-    handleCloseEdit();
-  };
-
   const handleOnConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(shareUpdateForm, ticker);
+    onSubmit(shareEditForm, ticker);
   };
 
   return (
     <div
-      className={`h-screen w-full fixed inset-0 z-20 overflow-hidden flex items-center justify-center`}
+      ref={editShareComponentRef}
+      className='flex flex-col absolute bg-white border shadow-md w-1/3 h-2/3 px-5 pt-12'
     >
-      <div className='bg-blue-100 grid relative w-[358px] min-h-300 rounded-lg max-h-[90vh] border border-slate-300'>
-        {/* <div
-          className=' className="ml-3 cursor-pointer'
-          onClick={handleCloseEdit}
-        >
-          <div className='text-end'>
-            <Image
-              src='./close.svg'
-              width={10}
-              height={10}
-              alt='close icon'
-              layout={'fixed'}
-            />
-          </div>
-        </div> */}
-        <form
-          // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
-          //   .replace(/ +/g, '-')
-          //   .toLowerCase()}`}
-          onSubmit={handleOnConfirm}
-        >
-          <div className='p-5 '>
-            <div>
-              <div className={`items-center self-start`}>
-                <h2 className='inline-block text-nitro-space font-source font-bold'>
-                  Update data for shareholding
-                </h2>
-              </div>
-              <div className='self-center'>
-                <label className='flex mt-5 text-xs capitalize mb-1 font-source'>
-                  Enter new book cost
-                </label>
-                <input
-                  className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
-                  id='cost'
-                  name='cost'
-                  type='text'
-                  placeholder='book cost'
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={`items-center self-start`}></div>
-              <div className='self-center'>
-                <label className='flex mt-5 text-xs capitalize mb-1 font-source'>
-                  Enter quantity
-                </label>
-                <input
-                  className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
-                  id='quantity'
-                  name='quantity'
-                  type='text'
-                  placeholder='quantity'
-                  onChange={handleChange}
-                />
-              </div>
+      <form
+        // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
+        //   .replace(/ +/g, '-')
+        //   .toLowerCase()}`}
+        onSubmit={handleOnConfirm}
+      >
+        <div className='p-5 '>
+          <div>
+            <div className={`items-center self-start`}>
+              <h2 className='inline-block text-xl text-nitro-space font-source font-bold'>
+                Update data for shareholding
+              </h2>
             </div>
-            <div className='self-end flex gap-1 items-center justify-end mt-3'>
+            <div className='self-center'>
+              <p className='flex mt-5 text-lg capitalize mb-1 font-source font-semibold'>
+                Symbol: {shareDataToEdit[0].symbol}
+              </p>
+            </div>
+            <div className='self-center'>
+              <label className='flex mt-5 text-xs capitalize mb-1 font-source'>
+                Enter new book cost
+              </label>
+              <input
+                className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
+                id='cost'
+                name='cost'
+                type='text'
+                placeholder='book cost'
+                onChange={handleChange}
+                value={shareDataToEdit[0].bookCost}
+              />
+            </div>
+            <div className={`items-center self-start`}></div>
+            <div className='self-center'>
+              <label className='flex mt-5 text-xs capitalize mb-1 font-source'>
+                Enter quantity
+              </label>
+              <input
+                className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
+                id='quantity'
+                name='quantity'
+                type='text'
+                placeholder='quantity'
+                onChange={handleChange}
+                value={shareDataToEdit[0].quantity}
+              />
+            </div>
+          </div>
+          {/* <div className='self-end flex gap-1 items-center justify-end mt-3'>
               {' '}
               <button
                 className='bg-red-400 rounded p-1 hover:bg-red-500 text-xs'
@@ -120,10 +117,15 @@ const Edit = ({
                   Update
                 </button>
               </div>
-            </div>
-          </div>
-        </form>
-      </div>
+            </div> */}
+          <button
+            type='submit'
+            className='flex bg-blue-700 mt-12 justify-center items-center rounded-full h-12 w-full p-5 hover:bg-blue-800 text-xl text-white'
+          >
+            Update
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

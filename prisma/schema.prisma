@@ -12,17 +12,41 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  firstName String
-  lastName  String
-  password  String
-  username  String  @unique
-  Stocks    Stocks?
+  id         String       @id @default(uuid())
+  firstName  String
+  lastName   String
+  password   String
+  username   String       @unique
+  createdAt  DateTime     @default(now())
+  stocksheld StocksHeld[]
 }
 
-model Stocks {
-  id     String   @id @default(uuid())
-  ticker String[]
-  user   User     @relation(fields: [userId], references: [id])
-  userId String   @unique
+model StocksHeld {
+  id               String   @id @default(uuid())
+  symbol           String
+  share_name       String
+  exchange_acronym String
+  exchange_name    String
+  exchange_country String
+  exchange_city    String
+  bookCost         Int
+  quantity         Int
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
+
+// https://github.com/prisma/prisma/discussions/6132
+
+// model StockData {
+//   id               String       @id @default(uuid())
+//   country          String?
+//   name             String
+//   symbol           String
+//   exchange_acronym String
+//   exchange_name    String
+//   exchange_country String
+//   exchange_city    String
+//   user_stocks      StocksHeld[]
+// }

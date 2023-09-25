@@ -1,41 +1,48 @@
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const middleware = (
+export const middleware = async (
   req: NextRequest,
-  res: NextResponse,
+  response: NextResponse,
   next: NextResponse
 ) => {
   const accessToken = req.cookies.get('accessToken');
-  // const refreshToken = req.cookies.get('refreshToken');
-  // console.log('request in mw: ', req.nextUrl.pathname);
-
-  // console.log('pathname', req.nextUrl.pathname);
 
   if (!accessToken) {
     console.log('there is no accessToken');
     return NextResponse.redirect('http://localhost:3000/login');
   }
-  if (req.nextUrl.pathname === '/logout') {
-    req.cookies.delete('accessToken');
-    req.cookies.delete('refreshToken');
-  }
+  // if (req.nextUrl.pathname === '/logout') {
+  // await deleteCookies();
+  // }
 
-  // jwt.verify(
-  //   accessToken!.toString()!,
-  //   process.env.ACCESS_TOKEN_SECRET!,
-  //   (err, user) => {
-  //     if (err)
-  //       return new NextResponse(
-  //         JSON.stringify({ message: 'authentication failed' })
-  //       );
-  //   }
-  // );
+  jwt.verify(
+    accessToken!.toString()!,
+    process.env.ACCESS_TOKEN_SECRET!,
+    (err, user) => {
+      if (err)
+        return new NextResponse(
+          JSON.stringify({ message: 'authentication failed' })
+        );
+    }
+  );
 };
 
 export const config = {
-  matcher: ['/home/:path*'],
+  matcher: ['/home', '/api/quote', '/api/share'],
 };
+
+// "/api/article(.*)",
+// "/api/auth/logout",
+// "/api/college/(.*)",
+// "/api/contribution(.*)",
+// "/api/dashboard(.*)",
+// "/api/education-detail(.*)",
+// "/api/financial-aid(.*)",
+// "/api/private-student-loan(.*)",
+// "/api/savings(.*)",
+// "/api/scholarship(.*)",
+// "/api/user/(.*)",
 
 //from nitro
 // export const verifyToken = async (
