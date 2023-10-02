@@ -26,6 +26,7 @@ model StocksHeld {
   symbol           String
   share_name       String
   exchange_acronym String
+  mic              String
   exchange_name    String
   exchange_country String
   exchange_city    String

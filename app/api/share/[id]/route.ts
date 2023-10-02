@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(request: NextRequest, { params }) {
   const { id } = params;
+  console.log('id from delete route', id);
   try {
     const result = validateDeleteShare(id);
     const deleteShare = await prisma.stocksHeld.delete({

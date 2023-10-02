@@ -76,6 +76,7 @@ export async function GET(request: NextRequest, { params }) {
 export async function POST(request: Request) {
   const {
     symbol,
+    mic,
     share_name,
     bookCost,
     quantity,
@@ -92,13 +93,14 @@ export async function POST(request: Request) {
     }
     const result = validateAddShare(
       symbol,
+      mic,
       share_name,
       bookCost,
       quantity,
       exchange_acronym,
       exchange_city,
       exchange_country,
-      exchange_name
+      exchange_name,
     );
 
     const { errors, isValid } = result;
@@ -106,12 +108,11 @@ export async function POST(request: Request) {
       throw new Error('Invalid data', errors);
     }
 
-    //need to add code to create share in database
-
     const newShare = await prisma.stocksHeld.create({
       data: {
         userId,
         symbol,
+        mic,
         share_name,
         bookCost,
         quantity,
@@ -123,18 +124,7 @@ export async function POST(request: Request) {
     });
 
     console.log('newShare: ', newShare);
-
-    // const tickerList = await prisma.stocksHeld.findMany({
-    //   where: {
-    //     userId: userId,
-    //   },
-    //   select: {
-    //     symbol: true,
-    //     share_name: true,
-    //   },
-    // });
-
-    return NextResponse.json({ message: 'New share added' });
+    return NextResponse.json({ response: newShare });
   } catch (error) {
     console.log(error);
   }

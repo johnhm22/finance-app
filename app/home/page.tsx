@@ -22,11 +22,16 @@ import { decimalFormatter } from '../utils/numberFormat.helper';
 
 interface IShareData {
   id: string;
-  longName: string;
-  regularMarketPrice: number;
-  symbol: string;
-  bookCost: number;
+  exchange_acronym: string;
+  exchange_city: string;
+  exchange_country: string;
+  exchange_name: string;
+  mic: string;
+  price: number;
   quantity: number;
+  share_name: string;
+  symbol: string;  
+  bookCost: number;
 }
 
 const page = () => {
@@ -54,30 +59,28 @@ const page = () => {
       country: '',
       has_eod: false,
       has_intraday: false,
-      share_name: '',
+      name: '',
       symbol: '',
       stock_exchange: {
-        exchange_acronym: '',
-        exchange_city: '',
-        exchange_country: '',
+        acronym: '',
+        city: '',
+        country: '',
         country_code: '',
         mic: '',
-        exchange_name: '',
+        name: '',
         website: '',
       },
     },
-    userId: '',
+    // userId: '',
   });
 
   const [shareDataToEdit, setShareDataToEdit] = useState<IShareDataToEdit[]>(
     []
   );
 
-  useEffect(() => {
-    getQuote();
-  }, [payloadData]);
-
-  const userId = 'b8d4f591-46fd-485f-9ec3-de7823b93ca6';
+  // useEffect(() => {
+  //   getPortfolioQuotes();
+  // }, [payloadData]);
 
   const totalCost = shareData?.reduce(
     (accumVal: number, currVal: IShareData) => {
@@ -86,17 +89,17 @@ const page = () => {
     0
   );
 
-  console.log('totalCost: ', totalCost);
+  // console.log('totalCost: ', totalCost);
 
-  //can I make getQuote a server action and import it?
-  const getQuote = async () => {
+  //can I make getPortfolioQuotes a server action and import it?
+  const getPortfolioQuotes = async () => {
     if (payloadData) {
       try {
         const response = await axios({
           method: 'GET',
-          url: `api/quote/${userId}`,
-          // url: `api/share/${userId}`,
+          url: `api/portfolio/${payloadData.id}`,          
         });
+        console.log('response from api/portfolio: ', response);
         setShareData(response.data.stocksHeld);
 
         //write reduce function to get total cost of shares
@@ -138,9 +141,9 @@ const page = () => {
   // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 
   const tickerSearch = async (data: string) => {
-    // const response = await findTicker(data);
-    // return response;
-    if (fakeTickerData) return fakeTickerData;
+    const response = await findTicker(data);
+    return response;
+    // if (fakeTickerData) return fakeTickerData;
   };
 
   // const debouncedSearch = debounce((arg) => {
@@ -239,32 +242,63 @@ const page = () => {
     userId: string
   ) => {
     try {
-      console.log('add share called');
-      console.log('userId: ', userId);
-      console.log('addShareForm: ', addShareForm);
       const { bookCost, quantity } = addShareForm;
-      const { share_name, symbol } = addShareForm.ticker;
+      const { name, symbol } = addShareForm.ticker;
       const {
-        exchange_acronym,
-        exchange_city,
-        exchange_country,
-        exchange_name,
-      } = addShareForm.ticker.stock_exchange;
+      stock_exchange,
+      } = addShareForm.ticker;
       const response = await axios({
         method: 'POST',
         url: 'api/share',
         data: {
           symbol,
-          share_name,
-          exchange_acronym,
-          exchange_name,
-          exchange_country,
-          exchange_city,
+          mic: stock_exchange.mic,
+          share_name: name,
+          exchange_acronym: stock_exchange.acronym,
+          exchange_name: stock_exchange.name,
+          exchange_country: stock_exchange.country,
+          exchange_city: stock_exchange.city,
           bookCost: +bookCost,
           quantity: +quantity,
           userId,
         },
       });
+      console.log('new share created: ', response)
+      if(response){        
+        try{
+        const res = await axios({
+          url: `api/quote/${symbol}`,
+          method: 'GET',
+          })
+        console.log('res.data.response.data[0].close from quote frontend: ', res.data.response.data[0].close);
+
+        const newShare = response.data.response;
+
+          const shareToAdd = {
+            id: response.data.response.id,
+            exchange_acronym: newShare.exchange_acronym,
+            exchange_city: newShare.exchange_city,
+            exchange_country: newShare.exchange_country,
+            exchange_name: newShare.exchange_name,
+            mic: newShare.mic,
+            quantity: newShare.quantity,
+            share_name: response.data.response.share_name,
+            symbol: newShare.symbol,
+            bookCost: newShare.bookCost,
+            price: res.data.response.data[0].close
+          }
+
+        setShareData((prevState) => ([
+          ...(prevState || []), shareToAdd]      
+        ));
+
+      }
+      catch(e){
+        console.log('Error getting quote: ', e);
+      }
+      }
+
+
     } catch (e) {
       console.log('Error: ', e);
     }
@@ -277,19 +311,19 @@ const page = () => {
         country: '',
         has_eod: false,
         has_intraday: false,
-        share_name: '',
+        name: '',
         symbol: '',
         stock_exchange: {
-          exchange_acronym: '',
-          exchange_city: '',
-          exchange_country: '',
+          acronym: '',
+          city: '',
+          country: '',
           country_code: '',
           mic: '',
-          exchange_name: '',
+          name: '',
           website: '',
         },
       },
-      userId: '',
+      // userId: '',
     });
   };
 
@@ -389,13 +423,13 @@ const page = () => {
               // <tr key={uuidv4()} className='text-blue-700 font-bold text-sm'>
               <tr key={data.id} className='text-blue-700 font-bold text-sm'>
                 <td className='flex flex-row'>
-                  <Image
+                  {/* <Image
                     className='mr-1'
                     src='./dots.svg'
                     alt='dots'
                     width={5}
                     height={10}
-                  />
+                  /> */}
                   <div className='flex flex-col'>
                     {data.symbol}
                     <p className='text-black text-xs font-normal'>
@@ -410,10 +444,10 @@ const page = () => {
                   {data.bookCost}p
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                  £0
+                   £ {decimalFormatter(data.price/100)}
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                  £4,742.86
+                  £ { Number(+decimalFormatter(data.quantity) * +decimalFormatter(data.price/100)).toFixed(2) }
                 </td>
                 <td className='flex flex-row gap-2 text-black font-normal w-6 text-xs text-center'>
                   <Image
@@ -445,6 +479,9 @@ const page = () => {
             textColour='text-black'
             onClick={() => setShowAddShare(true)}
           />
+        </div>
+        <div className='justify-start font-light text-sm italic'>
+          Value = end of day
         </div>
       </div>
       {/* <div className='flex flex-1 bg-red-300 w-3/5 absolute items-center justify-center mt-8 h-2/3'> */}

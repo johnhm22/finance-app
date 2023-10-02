@@ -1,51 +1,28 @@
-import prisma from '@/app/utils/prisma.library';
 import axios from 'axios';
-import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
+
+const prisma = new PrismaClient();
 
 // GET
-export async function GET(request: Request, { params }) {
-  const { id } = params;
-  try {
-    const stocksHeld = await prisma.stocksHeld.findMany({
-      where: {
-        userId: id,
-      },
-    });
-    return NextResponse.json({ stocksHeld: stocksHeld });
-  } catch (e) {
-    console.log('Error: ', e);
-  }
-  const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes`;
+export async function GET(req: NextRequest, {params}) {
 
-  // try {
-  //   const result = await axios(url, {
-  //     method: 'GET',
-  //     headers: {
-  //       'X-RapidAPI-Key': process.env.API_KEY!,
-  //       'X-RapidAPI-Host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-  //     },
-  //     params: {
-  //       region: 'GB',
-  //       symbols: 'SMT.l,DGE.l',
-  //     },
-  //   });
-  //   console.log('result.data: ', result.data);
-  //   // return result.data.price;
-  //   return new Response(JSON.stringify(result.data), { status: 200 });
-  // } catch (error) {
-  //   console.log('Error: ', error);
-  // }
+const {id} = params
+console.log('params data in quote api: ', id);
 
-  //   try {
-  //     const res = await fetch(url, {
-  //       method: 'GET',
-  //       headers: {
-  //         'X-RapidAPI-Key': process.env.API_KEY!,
-  //         'X-RapidAPI-Host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-  //       },
-  //     });
-  //     return res.json();
-  //   } catch (error) {
-  //     console.log('Error: ', error);
-  //   }
+try{
+const response = await axios({
+  url: `http://api.marketstack.com/v1/eod/latest?access_key=${process.env.MARKETSTACK_ACCESS_KEY}&symbols=${id}`,
+method: 'GET'
+});
+console.log('res.data from quote api: ',response.data);
+
+return NextResponse.json({response: response.data});
+
 }
+catch(e){
+  console.log('There was an error');
+  // console.log('Error: ', e);
+}  
+
+};

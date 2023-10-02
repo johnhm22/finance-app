@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { ILoginForm } from '@/types';
+import { update } from 'lodash';
 
 const prisma = new PrismaClient();
 
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       username: user.username,
       role: 'admin',
     };
+
     const accessToken = jwt.sign(
       updatedUser,
       process.env.ACCESS_TOKEN_SECRET!,

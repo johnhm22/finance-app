@@ -41,10 +41,26 @@ export interface IRegisterForm extends ILoginForm {
 export interface AddShareForm {
   bookCost: number;
   quantity: number;
-  userId: string;
-  ticker: TickerSearchData;
+  // userId: string;
+  ticker: TickerData;
 }
 
+export type TickerData = {
+  country?: string;
+  has_eod: boolean;
+  has_intraday: boolean;
+  name: string;
+  symbol: string;
+  stock_exchange: {
+    acronym: string;
+    city: string;
+    country: string;
+    country_code: string;
+    mic: string;
+    name: string;
+    website: string;
+  };
+};
 export type TickerSearchData = {
   country?: string;
   has_eod: boolean;
@@ -63,7 +79,7 @@ export type TickerSearchData = {
 };
 
 export type TickerResponse = {
-  data: TickerSearchData[];
+  data: TickerData[];
   pagination: {
     count: number;
     limit: number;

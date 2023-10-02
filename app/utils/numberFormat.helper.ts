@@ -1,5 +1,5 @@
 export const decimalFormatter = (amount: number): string => {
-  return new Intl.NumberFormat('en-US', {
+  return Number(new Intl.NumberFormat('en-US', {
     style: 'decimal',
-  }).format(amount);
+  }).format(amount)).toFixed(2);
 };

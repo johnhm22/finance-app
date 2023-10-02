@@ -2,7 +2,7 @@
 
 import React, { useMemo, useRef, useState } from 'react';
 
-import { AddShareForm, TickerResponse, TickerSearchData } from '@/types';
+import { AddShareForm, TickerData, TickerResponse, TickerSearchData } from '@/types';
 import { debounce } from 'lodash';
 import TickerSelect from './TickerSelect';
 import { fakeTickerData } from '@/app/utils/fakeTickerData';
@@ -16,7 +16,7 @@ interface IProps {
   addShareForm: AddShareForm | undefined;
   // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
   //above is correct when not using fakeData
-  tickerSearch: (arg: string) => Promise<TickerSearchData[] | undefined>;
+  tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 }
 
 const AddShare = ({
@@ -40,7 +40,7 @@ const AddShare = ({
 
   closeOnOutsideClick(addShareComponentRef, handleCloseAddShare);
 
-  const saveSelectedTickerInForm = (ticker: TickerSearchData) => {
+  const saveSelectedTickerInForm = (ticker: TickerData) => {
     setAddShareForm((prevState) => ({
       ...prevState,
       ticker,
@@ -50,48 +50,40 @@ const AddShare = ({
   const [openTickerListDropDown, setOpenTickerListDropDown] =
     useState<boolean>(false);
 
-  const [tickerList, setTickerList] = useState<TickerSearchData[]>([]);
+  const [tickerList, setTickerList] = useState<TickerData[]>([]);
 
   const handleTickerSearchChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { value, name } = e.target;
+    const { value } = e.target;
+    console.log('value in handleTickerSearchChange: ', value);
     const response = await tickerSearch(value);
 
-    if (fakeTickerData) {
-      setOpenTickerListDropDown(true);
-      setTickerList(fakeTickerData);
-    }
+console.log('response from tickerSearch: ', response);
 
-    //***************** */
-    // if (response?.data) {
+    // if (fakeTickerData) {
     //   setOpenTickerListDropDown(true);
-    //   setTickerList(response.data);
-
-    //************* */
-    // setTickerList(
-    //   response.bestMatches.map(() => {
-    //     return;
-    //   })
-    // );
+    //   setTickerList(fakeTickerData);
     // }
-    setAddShareForm((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+
+    if (response!.data) {
+      setOpenTickerListDropDown(true);
+      setTickerList(response!.data);
+    }
+   
   };
 
-  // const handleTickerChange = (selectedOption) => {
-
-  // };
 
   const debouncedChangeHandlerForTickerSearch = useMemo(
     () => debounce(handleTickerSearchChange, 300),
     []
   );
 
-  const onTickerSelect = (ticker: TickerSearchData) => {
+// const [inputValue, setInputValue] = useState<{name: string, symbol: string} | undefined>()
+
+  const onTickerSelect = (ticker: TickerData) => {
     saveSelectedTickerInForm(ticker);
+    // setInputValue({name: ticker.name,  symbol: ticker.symbol})
     setOpenTickerListDropDown(false);
   };
 
@@ -103,7 +95,7 @@ const AddShare = ({
   return (
     <div
       ref={addShareComponentRef}
-      className='flex flex-col absolute bg-white border shadow-md w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'
+      className='flex flex-col absolute bg-white border shadow-md mt-20 w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'
     >
       <form
         className=''
@@ -130,10 +122,11 @@ const AddShare = ({
               tickerList={tickerList}
               openTickerListDropDown={openTickerListDropDown}
               placeholder='Enter name or ticker symbol'
-              handleTickerSearchChange={handleTickerSearchChange}
+              // handleTickerSearchChange={handleTickerSearchChange}
+              handleTickerSearchChange={debouncedChangeHandlerForTickerSearch}
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
-              value={addShareForm}
+              value=''              
             />
           </div>
           <div className='self-center'>

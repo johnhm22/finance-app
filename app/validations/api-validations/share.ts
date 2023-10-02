@@ -1,5 +1,6 @@
 export const validateAddShare = (
   symbol: string,
+  mic: string,
   share_name: string,
   bookCost: number,
   quantity: number,
@@ -38,6 +39,9 @@ export const validateAddShare = (
   }
   if (typeof exchange_name !== 'string' || exchange_name === undefined) {
     errors.exchange_name = 'Please enter a valid exchange name';
+  }
+  if (typeof mic !== 'string' || mic === undefined) {
+    errors.mic = 'Please enter a valid exchange mic';
   }
   return { errors, isValid: Object.keys(errors).length <= 0 };
 };
