@@ -39,11 +39,15 @@ console.log('quoteCall.data.data: ', quoteCall.data.data);
 //   price: number & StocksHeld
 // }
 
-
+const newStockArray = [];
+// const price: keyof typeof newStockArray
 
 if(quoteCall){
-  quoteCall.data.data.forEach((el, idx: number)=>{
+  quoteCall.data.data.forEach((el: object, idx: number)=>{
 stocksHeld[idx].price = el.close
+
+// newStockArray.push({...stocksHeld[idx], newStockArray[idx].price = el.close})
+
   })
 }
 

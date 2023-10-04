@@ -2,7 +2,12 @@
 
 import React, { useMemo, useRef, useState } from 'react';
 
-import { AddShareForm, TickerData, TickerResponse, TickerSearchData } from '@/types';
+import {
+  AddShareForm,
+  TickerData,
+  TickerResponse,
+  TickerSearchData,
+} from '@/types';
 import { debounce } from 'lodash';
 import TickerSelect from './TickerSelect';
 import { fakeTickerData } from '@/app/utils/fakeTickerData';
@@ -41,11 +46,14 @@ const AddShare = ({
   closeOnOutsideClick(addShareComponentRef, handleCloseAddShare);
 
   const saveSelectedTickerInForm = (ticker: TickerData) => {
+    //this is where the selected share is saved into state
     setAddShareForm((prevState) => ({
       ...prevState,
       ticker,
     }));
   };
+
+  console.log('addShareForm in AddShare.tsx: ', addShareForm);
 
   const [openTickerListDropDown, setOpenTickerListDropDown] =
     useState<boolean>(false);
@@ -56,34 +64,23 @@ const AddShare = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = e.target;
-    console.log('value in handleTickerSearchChange: ', value);
+    console.log('value in handleTickerChange: ', value);
     const response = await tickerSearch(value);
-
-console.log('response from tickerSearch: ', response);
-
-    // if (fakeTickerData) {
-    //   setOpenTickerListDropDown(true);
-    //   setTickerList(fakeTickerData);
-    // }
-
     if (response!.data) {
       setOpenTickerListDropDown(true);
       setTickerList(response!.data);
     }
-   
   };
-
 
   const debouncedChangeHandlerForTickerSearch = useMemo(
     () => debounce(handleTickerSearchChange, 300),
     []
   );
 
-// const [inputValue, setInputValue] = useState<{name: string, symbol: string} | undefined>()
+  // const [inputValue, setInputValue] = useState<{name: string, symbol: string} | undefined>()
 
   const onTickerSelect = (ticker: TickerData) => {
     saveSelectedTickerInForm(ticker);
-    // setInputValue({name: ticker.name,  symbol: ticker.symbol})
     setOpenTickerListDropDown(false);
   };
 
@@ -126,7 +123,7 @@ console.log('response from tickerSearch: ', response);
               handleTickerSearchChange={debouncedChangeHandlerForTickerSearch}
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
-              value=''              
+              addShareForm={addShareForm}
             />
           </div>
           <div className='self-center'>

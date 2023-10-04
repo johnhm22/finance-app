@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   AddShareForm,
   ShareEditForm,
@@ -12,13 +12,15 @@ import {
 } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
-import Edit from '../components/Edit';
+import Edit from '../components/EditShare';
 import AddShare from '../components/AddShare';
 import { findTicker } from '@/app/utils/ticker.search.helper';
 import { fakeTickerData } from '@/app/utils/fakeTickerData';
 import { useGlobalContext } from '../components/UserContext';
 import Button from '../components/Button';
 import { decimalFormatter } from '../utils/numberFormat.helper';
+import prisma from '../utils/prisma.library';
+import { createModuleResolutionCache } from 'typescript';
 
 interface IShareData {
   id: string;
@@ -30,9 +32,11 @@ interface IShareData {
   price: number;
   quantity: number;
   share_name: string;
-  symbol: string;  
+  symbol: string;
   bookCost: number;
 }
+
+//value = quantity * price
 
 const page = () => {
   const { payloadData } = useGlobalContext();
@@ -50,7 +54,26 @@ const page = () => {
   //   }
   // };
 
-  const [shareEditForm, setShareEditForm] = React.useState<ShareEditForm[]>([]);
+  // const [shareEditForm, setShareEditForm] = React.useState<ShareEditForm[]>([]);
+
+  // export type ShareEditForm = {
+  //   bookCost: number;
+  //   quantity: number;
+  //   ticker: TickerSearchData;
+  // };
+
+  const [shareDataToEdit, setShareDataToEdit] = useState<IShareDataToEdit>({
+    id: '',
+    symbol: '',
+    bookCost: 0,
+    quantity: 0,
+  });
+
+  // export interface IShareDataToEdit {
+  //   symbol: string;
+  //   bookCost: number;
+  //   quantity: number;
+  // }
 
   const [addShareForm, setAddShareForm] = React.useState<AddShareForm>({
     bookCost: 0,
@@ -74,22 +97,9 @@ const page = () => {
     // userId: '',
   });
 
-  const [shareDataToEdit, setShareDataToEdit] = useState<IShareDataToEdit[]>(
-    []
-  );
-
-  // useEffect(() => {
-  //   getPortfolioQuotes();
-  // }, [payloadData]);
-
-  const totalCost = shareData?.reduce(
-    (accumVal: number, currVal: IShareData) => {
-      return accumVal + currVal.bookCost;
-    },
-    0
-  );
-
-  // console.log('totalCost: ', totalCost);
+  useEffect(() => {
+    getPortfolioQuotes();
+  }, [payloadData]);
 
   //can I make getPortfolioQuotes a server action and import it?
   const getPortfolioQuotes = async () => {
@@ -97,46 +107,40 @@ const page = () => {
       try {
         const response = await axios({
           method: 'GET',
-          url: `api/portfolio/${payloadData.id}`,          
+          url: `api/portfolio/${payloadData.id}`,
         });
-        console.log('response from api/portfolio: ', response);
         setShareData(response.data.stocksHeld);
-
-        //write reduce function to get total cost of shares
-
-        // const returnedShareData = response.data.result.data;
-
-        // console.log('data from getQuote: ', returnedShareData);
-        // const dataArray: IShareData[] = [];
-
-        // data.map((d: IShareData) => {
-        //   dataArray.push({
-        //     longName: d.longName,
-        //     regularMarketPrice: d.regularMarketPrice,
-        //     symbol: d.symbol,
-        //   });
-        // });
-
-        // setShareData(returnedShareData);
-
-        //map over response.data.quoteResponse.result and enter into setShareData
-
-        // setShareData({
-        //   longName: response.data.price.longName,
-        //   price: response.data.price.regularMarketPrice.raw,
-        //   symbol: response.data.price.symbol,
-        // });
       } catch (error) {
         console.log('Error: ', error);
       }
     }
   };
 
+  const totalCost = shareData?.reduce(
+    (accumVal: number, currVal: IShareData) => {
+      return accumVal + (currVal.bookCost / 100) * currVal.quantity;
+    },
+    0
+  );
+
+  // {decimalFormatter(data.price)} p
+
   console.log('shareData: ', shareData);
 
-  // useEffect(() => {
-  //   getQuote();
-  // }, [payloadData]);
+  const totalValue: number | undefined = shareData?.reduce(
+    (accumVal: number, currVal: IShareData) => {
+      // console.log('accumVal: ', accumVal);
+      // console.log('quantity: ', currVal.quantity);
+      // console.log('price: ', currVal.price);
+      // console.log(
+      //   'accumVal: ',
+      //   accumVal + +(currVal.quantity * currVal.price).toFixed(2) / 100
+      // );
+
+      return accumVal + +((currVal.quantity * currVal.price) / 100).toFixed(2);
+    },
+    0
+  );
 
   // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 
@@ -145,21 +149,6 @@ const page = () => {
     return response;
     // if (fakeTickerData) return fakeTickerData;
   };
-
-  // const debouncedSearch = debounce((arg) => {
-  //   setSearchText(arg);
-  //   if (arg === '') {
-  //     getPrompts();
-  //   } else {
-  //     const filteredPosts = posts!.filter(
-  //       (p) =>
-  //         p.prompt.includes(searchText) ||
-  //         p.creator.username === searchText ||
-  //         p.tag === searchText
-  //     );
-  //     setPosts(filteredPosts);
-  //   }
-  // }, 200);
 
   const handleCloseEdit = () => {
     setShowEdit(false);
@@ -170,18 +159,21 @@ const page = () => {
   };
 
   const handleShowEdit = (
+    id: string,
     symbol: string,
     bookCost: number,
     quantity: number
   ) => {
-    console.log('symbol, bookCost, quantity: ', symbol, bookCost, quantity);
     // setShareDataToEdit((prevStat) => [
     //   ...prevStat,
     //   { symbol: symbol, bookCost: bookCost, quantity: quantity },
     // ]);
-    setShareDataToEdit([
-      { symbol: symbol, bookCost: bookCost, quantity: quantity },
-    ]);
+    setShareDataToEdit({
+      id: id,
+      symbol: symbol,
+      bookCost: bookCost,
+      quantity: quantity,
+    });
     setShowEdit((prevState) => !prevState);
   };
 
@@ -191,32 +183,53 @@ const page = () => {
         url: `api/share/${id}`,
         method: 'DELETE',
       });
-
-      setShareData(
-        shareData?.filter((data) => {
-          data.id !== id;
-        })
-      );
+      const filteredShares = shareData?.filter((data) => data.id !== id);
+      setShareData(filteredShares);
     } catch (e) {
       console.log('Deletion error: ', e);
     }
-
-    //update share data by using filter to remove deleted share.
   };
 
-  const onSubmit = (shareEditForm: ShareEditForm[], ticker: string) => {
-    //filter out shareholding being updated
-    //add in data on edited shareholding
-
-    const updateShares = shareData!.filter((data) => {
-      data.symbol != ticker;
+  const editSharesHeld = async (shareDataToEdit: IShareDataToEdit) => {
+    const { symbol, quantity, bookCost, id } = shareDataToEdit;
+    const updatedShare = await axios({
+      url: `api/share/${id}`,
+      method: 'PUT',
+      data: {
+        symbol,
+        quantity,
+        bookCost,
+        id,
+      },
     });
-    // setShareData((preValue) => (
-    //   ...preValue,
-    //   shareUpdateForm));
-    //update details for shareholding held in state and also call internal api to update details held in database
-    setShowEdit(false);
+    return updatedShare;
   };
+
+  const onConfirmEditShare = async (shareDataToEdit: IShareDataToEdit) => {
+    const response = await editSharesHeld(shareDataToEdit);
+    if (response.status === 200) {
+      setShareData((prevState) => {
+        let updatedShareIndex = prevState?.findIndex(
+          (share) => share.id === response.data.updatedShare.id
+        );
+        if (updatedShareIndex !== -1) {
+          prevState![updatedShareIndex!] = response.data.updatedShare;
+        }
+        return prevState;
+      });
+    }
+    setShowEdit(false);
+    setShareDataToEdit({
+      id: '',
+      symbol: '',
+      bookCost: 0,
+      quantity: 0,
+    });
+  };
+
+  // setShareData((prevState) => ([
+  //   ...(prevState || []), shareToAdd]
+  // ));
 
   //from nitro
   // const addNewContribution = async (
@@ -244,9 +257,7 @@ const page = () => {
     try {
       const { bookCost, quantity } = addShareForm;
       const { name, symbol } = addShareForm.ticker;
-      const {
-      stock_exchange,
-      } = addShareForm.ticker;
+      const { stock_exchange } = addShareForm.ticker;
       const response = await axios({
         method: 'POST',
         url: 'api/share',
@@ -259,20 +270,17 @@ const page = () => {
           exchange_country: stock_exchange.country,
           exchange_city: stock_exchange.city,
           bookCost: +bookCost,
-          quantity: +quantity,
+          quantity: Math.round(+quantity),
           userId,
         },
       });
-      console.log('new share created: ', response)
-      if(response){        
-        try{
-        const res = await axios({
-          url: `api/quote/${symbol}`,
-          method: 'GET',
-          })
-        console.log('res.data.response.data[0].close from quote frontend: ', res.data.response.data[0].close);
-
-        const newShare = response.data.response;
+      if (response) {
+        try {
+          const res = await axios({
+            url: `api/quote/${symbol}`,
+            method: 'GET',
+          });
+          const newShare = response.data.response;
 
           const shareToAdd = {
             id: response.data.response.id,
@@ -285,20 +293,14 @@ const page = () => {
             share_name: response.data.response.share_name,
             symbol: newShare.symbol,
             bookCost: newShare.bookCost,
-            price: res.data.response.data[0].close
-          }
+            price: res.data.response.data[0].close,
+          };
 
-        setShareData((prevState) => ([
-          ...(prevState || []), shareToAdd]      
-        ));
-
+          setShareData((prevState) => [...(prevState || []), shareToAdd]);
+        } catch (e) {
+          console.log('Error getting quote: ', e);
+        }
       }
-      catch(e){
-        console.log('Error getting quote: ', e);
-      }
-      }
-
-
     } catch (e) {
       console.log('Error: ', e);
     }
@@ -338,15 +340,13 @@ const page = () => {
   // return newCollege;
   // };
 
-  const totalValue = 283000;
-
   return (
     <main className='flex h-screen flex-col items-center bg-slate-200'>
       <div className='flex flex-row w-11/12 md:w-2/3 bg-white justify-between px-2 py-5 items-center mt-28 drop-shadow-md'>
         <p className='font-semibold items-center'>Summary</p>
         <div className='flex flex-col'>
           <p className=''>Total Value</p>
-          <p className='font-semibold'>£ {decimalFormatter(totalValue)}</p>
+          <p className='font-semibold'>£ {totalValue}</p>
         </div>
 
         <div className='flex flex-col'>
@@ -359,7 +359,8 @@ const page = () => {
           {' '}
           <p className=''>Profit/Loss</p>
           <p className='font-semibold'>
-            £ {decimalFormatter(totalValue - totalCost!)}
+            {/* £ {decimalFormatter(+totalValue!.toFixed(2) - totalCost!)} */}£{' '}
+            {decimalFormatter(totalValue! - totalCost!)}
           </p>
         </div>
       </div>
@@ -393,15 +394,6 @@ const page = () => {
           </div>
           <div className='flex flex-row text-xs'>
             <div className='basis-3/4 flex flex-row'>
-              {/* <Image
-                className='pb-2 mr-1'
-                src='./dots.svg'
-                alt='dots'
-                width={5}
-                height={10}
-              />
-              <h2 className='font-semibold mr-2'>Group by</h2>
-              <h2 className='pb-2'>All</h2> */}
               {/* <p className='flex text-red-400'>Updated at {Date()}</p> */}
             </div>
           </div>
@@ -414,26 +406,19 @@ const page = () => {
               <th className='p-2 w-32'>Book Cost</th>
               <th className='p-2'>Price</th>
               <th className=' p-2'>Value</th>
-              <th className=' bg-white'></th>
+              <th className='p-2'>Edit/delete</th>
             </tr>
           </thead>
           <tbody>
             {shareData?.map((data) => (
               /* {fakeTickerData?.map((data) => ( */
               // <tr key={uuidv4()} className='text-blue-700 font-bold text-sm'>
-              <tr key={data.id} className='text-blue-700 font-bold text-sm'>
+              <tr key={data.id} className='bg-red-400'>
                 <td className='flex flex-row'>
-                  {/* <Image
-                    className='mr-1'
-                    src='./dots.svg'
-                    alt='dots'
-                    width={5}
-                    height={10}
-                  /> */}
-                  <div className='flex flex-col'>
+                  <div className='flex flex-col text-blue-700 font-bold text-sm'>
                     {data.symbol}
                     <p className='text-black text-xs font-normal'>
-                      Company name
+                      {data.share_name}
                     </p>
                   </div>
                 </td>
@@ -444,22 +429,30 @@ const page = () => {
                   {data.bookCost}p
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                   £ {decimalFormatter(data.price/100)}
+                  {decimalFormatter(data.price)} p
                 </td>
-                <td className='text-black font-normal text-xs text-center'>
-                  £ { Number(+decimalFormatter(data.quantity) * +decimalFormatter(data.price/100)).toFixed(2) }
+                <td className='text-black font-normal text-xs text-center border border-red-500'>
+                  {/* £ {data.quantity * +(data.price / 100).toFixed(2)} */}£{' '}
+                  {(data.quantity * +(data.price / 100)).toFixed(2)}
                 </td>
-                <td className='flex flex-row gap-2 text-black font-normal w-6 text-xs text-center'>
+                <td className='flex flex-row gap-2 text-black font-normal text-xs justify-center h-full items-center border border-blue-700'>
                   <Image
-                    className='ml-1 cursor-pointer'
+                    className=' ml-1 cursor-pointer'
                     src='./edit.svg'
                     alt='edit'
                     width={15}
                     height={25}
-                    onClick={() => handleShowEdit(data.symbol, 33, 7)}
+                    onClick={() =>
+                      handleShowEdit(
+                        data.id,
+                        data.symbol,
+                        data.bookCost,
+                        data.quantity
+                      )
+                    }
                   />
                   <Image
-                    className='ml-1 cursor-pointer'
+                    className='cursor-pointer'
                     src='./trash-icon.svg'
                     alt='edit'
                     width={35}
@@ -484,15 +477,12 @@ const page = () => {
           Value = end of day
         </div>
       </div>
-      {/* <div className='flex flex-1 bg-red-300 w-3/5 absolute items-center justify-center mt-8 h-2/3'> */}
       {showEdit ? (
         <Edit
           handleCloseEdit={handleCloseEdit}
-          onSubmit={onSubmit}
-          shareEditForm={shareEditForm!}
-          setShareEditForm={setShareEditForm}
-          ticker='SMT.l'
+          onSubmit={onConfirmEditShare}
           shareDataToEdit={shareDataToEdit}
+          setShareDataToEdit={setShareDataToEdit}
         />
       ) : null}
       {showAddShare ? (

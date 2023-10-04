@@ -1,35 +1,28 @@
 import React, { FormEvent, FormEventHandler, useRef } from 'react';
 // import Image from 'next/image';
 
-import { IShareDataToEdit, ShareEditForm } from '@/types';
+import { AddShareForm, IShareDataToEdit, ShareEditForm } from '@/types';
 import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 interface IProps {
   handleCloseEdit: () => void;
-  onSubmit: (arg: ShareEditForm[], ticker: string) => void;
-  setShareEditForm: React.Dispatch<React.SetStateAction<ShareEditForm[]>>;
-  shareEditForm: ShareEditForm[];
-  ticker: string;
-  shareDataToEdit: IShareDataToEdit[];
+  onSubmit: (arg: IShareDataToEdit) => void;
+  shareDataToEdit: IShareDataToEdit;
+  setShareDataToEdit: React.Dispatch<React.SetStateAction<IShareDataToEdit>>;
 }
 
 const Edit = ({
   handleCloseEdit,
   onSubmit,
-  setShareEditForm,
-  shareEditForm,
-  ticker,
   shareDataToEdit,
+  setShareDataToEdit,
 }: IProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    setShareEditForm((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setShareDataToEdit((prevState) => {
+      return { ...prevState, [name]: value };
+    });
   };
-
-  console.log('shareDataToEdit: ', shareDataToEdit);
 
   const editShareComponentRef = useRef(null);
   closeOnOutsideClick(editShareComponentRef, handleCloseEdit);
@@ -44,13 +37,21 @@ const Edit = ({
 
   const handleOnConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(shareEditForm, ticker);
+    // onSubmit(shareEditForm, shareDataToEdit[0].symbol);
+    onSubmit(shareDataToEdit);
   };
+
+  // export interface IShareDataToEdit {
+  //   symbol: string;
+  //   bookCost: number;
+  //   quantity: number;
+  // }
 
   return (
     <div
       ref={editShareComponentRef}
-      className='flex flex-col absolute bg-white border shadow-md w-1/3 h-2/3 px-5 pt-12'
+      // className='flex flex-col absolute bg-white border shadow-md w-1/3 h-2/3 px-5 pt-12'
+      className='flex flex-col absolute bg-white border shadow-md mt-20 w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'
     >
       <form
         // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
@@ -67,7 +68,7 @@ const Edit = ({
             </div>
             <div className='self-center'>
               <p className='flex mt-5 text-lg capitalize mb-1 font-source font-semibold'>
-                Symbol: {shareDataToEdit[0].symbol}
+                Symbol: {shareDataToEdit.symbol}
               </p>
             </div>
             <div className='self-center'>
@@ -77,11 +78,11 @@ const Edit = ({
               <input
                 className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
                 id='cost'
-                name='cost'
+                name='bookCost'
                 type='text'
                 placeholder='book cost'
                 onChange={handleChange}
-                value={shareDataToEdit[0].bookCost}
+                value={shareDataToEdit.bookCost}
               />
             </div>
             <div className={`items-center self-start`}></div>
@@ -96,7 +97,7 @@ const Edit = ({
                 type='text'
                 placeholder='quantity'
                 onChange={handleChange}
-                value={shareDataToEdit[0].quantity}
+                value={shareDataToEdit.quantity}
               />
             </div>
           </div>

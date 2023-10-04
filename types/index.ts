@@ -111,6 +111,7 @@ export type QuoteResponse = {
 };
 
 export interface IShareDataToEdit {
+  id: string;
   symbol: string;
   bookCost: number;
   quantity: number;
