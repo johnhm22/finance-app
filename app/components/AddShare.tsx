@@ -3,10 +3,11 @@
 import React, { useMemo, useRef, useState } from 'react';
 
 import { AddShareForm, TickerData, TickerResponse } from '@/types';
-import debounce from 'lodash.debounce';
+
 import TickerSelect from './TickerSelect';
 import { useGlobalContext } from './UserContext';
 import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
+import { debounce } from '../utils/debounce';
 
 interface IProps {
   handleCloseAddShare: () => void;
@@ -49,11 +50,11 @@ const AddShare = ({
 
   const [tickerList, setTickerList] = useState<TickerData[]>([]);
 
-  useEffect(() => {
-    return () => {
-      debouncedChangeHandler.cancel();
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     debounce.cancel;
+  //   };
+  // }, []);
 
   const handleTickerSearchChange = async (
     e: React.ChangeEvent<HTMLInputElement>
