@@ -8,6 +8,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  unstable_allowDynamic: ['./node_modules/lodash/lodash.js'],
 };
 
 module.exports = nextConfig;
