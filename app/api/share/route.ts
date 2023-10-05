@@ -6,74 +6,7 @@ import { isValidUUId } from '@/app/validations/validation-functions/uuid.validat
 
 const prisma = new PrismaClient();
 
-//GET
-// export async function GET(request: Request, { params }) {
-//   const { id } = params;
-
-export async function GET(request: NextRequest, { params }) {
-  // const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes`;
-
-  // const { searchParams } = new URL(request.url);
-
-  const { id } = params;
-
-  console.log('*****************************');
-  console.log('*****************************');
-  console.log('Inside api GET from Prisma');
-  console.log('id from params: ', id);
-  console.log('*****************************');
-  console.log('*****************************');
-  // try {
-  //need to get list of tickers from postresql db
-
-  // const tickerList = await prisma.stocksHeld.findMany({
-  //   where: {
-  //     userId: userId,
-  //   },
-  //   select: {
-  //     symbol: true,
-  //     share_name: true,
-  //   },
-  // });
-
-  // console.log('tickerList: ', tickerList);
-
-  // let symbolString = '';
-
-  // tickerList.forEach((ticker) => {
-  //   symbolString = symbolString + ticker.symbol + ',';
-  // });
-
-  // const result = await axios({
-  //   method: 'GET',
-  //   url: `https://api.marketstack.com/v1/intraday/latest?access_key=${process.env.MARKETSTACK_ACCESS_KEY}&symbols=${symbolString}`,
-  // });
-
-  // console.log('result from marketstack: ', result.data);
-
-  // return NextResponse.json({ result: result.data, status: 200 });
-  // } catch (error) {
-  //   console.log('Error: ', error);
-  // }
-
-  //   try {
-  //     const res = await fetch(url, {
-  //       method: 'GET',
-  //       headers: {
-  //         'X-RapidAPI-Key': process.env.API_KEY!,
-  //         'X-RapidAPI-Host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-  //       },
-  //     });
-  //     return res.json();
-  //   } catch (error) {
-  //     console.log('Error: ', error);
-  //   }
-}
-
-//DELETE
-
-// POST
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const {
     symbol,
     mic,
@@ -100,7 +33,7 @@ export async function POST(request: Request) {
       exchange_acronym,
       exchange_city,
       exchange_country,
-      exchange_name,
+      exchange_name
     );
 
     const { errors, isValid } = result;
@@ -122,8 +55,6 @@ export async function POST(request: Request) {
         exchange_name,
       },
     });
-
-    console.log('newShare: ', newShare);
     return NextResponse.json({ response: newShare });
   } catch (error) {
     console.log(error);

@@ -8,8 +8,6 @@ import Register from '@/app/components/Register';
 import { IRegisterForm } from '@/types';
 
 const page = () => {
-  //create account creation form
-
   const router = useRouter();
 
   const onRegister = async (data: IRegisterForm) => {

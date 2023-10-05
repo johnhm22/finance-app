@@ -2,15 +2,9 @@
 
 import React, { useMemo, useRef, useState } from 'react';
 
-import {
-  AddShareForm,
-  TickerData,
-  TickerResponse,
-  TickerSearchData,
-} from '@/types';
+import { AddShareForm, TickerData, TickerResponse } from '@/types';
 import { debounce } from 'lodash';
 import TickerSelect from './TickerSelect';
-import { fakeTickerData } from '@/app/utils/fakeTickerData';
 import { useGlobalContext } from './UserContext';
 import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
 
@@ -19,8 +13,6 @@ interface IProps {
   onSubmit: (arg: AddShareForm, userId: string) => void;
   setAddShareForm: React.Dispatch<React.SetStateAction<AddShareForm>>;
   addShareForm: AddShareForm | undefined;
-  // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
-  //above is correct when not using fakeData
   tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 }
 
@@ -46,14 +38,11 @@ const AddShare = ({
   closeOnOutsideClick(addShareComponentRef, handleCloseAddShare);
 
   const saveSelectedTickerInForm = (ticker: TickerData) => {
-    //this is where the selected share is saved into state
     setAddShareForm((prevState) => ({
       ...prevState,
       ticker,
     }));
   };
-
-  console.log('addShareForm in AddShare.tsx: ', addShareForm);
 
   const [openTickerListDropDown, setOpenTickerListDropDown] =
     useState<boolean>(false);
@@ -64,7 +53,6 @@ const AddShare = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = e.target;
-    console.log('value in handleTickerChange: ', value);
     const response = await tickerSearch(value);
     if (response!.data) {
       setOpenTickerListDropDown(true);
@@ -76,8 +64,6 @@ const AddShare = ({
     () => debounce(handleTickerSearchChange, 300),
     []
   );
-
-  // const [inputValue, setInputValue] = useState<{name: string, symbol: string} | undefined>()
 
   const onTickerSelect = (ticker: TickerData) => {
     saveSelectedTickerInForm(ticker);
@@ -94,20 +80,13 @@ const AddShare = ({
       ref={addShareComponentRef}
       className='flex flex-col absolute bg-white border shadow-md mt-20 w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'
     >
-      <form
-        className=''
-        // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
-        //   .replace(/ +/g, '-')
-        //   .toLowerCase()}`}
-        onSubmit={handleOnConfirm}
-      >
+      <form onSubmit={handleOnConfirm}>
         <div className='p-5 '>
           <div className='items-center self-start'>
             <h2 className='inline-block text-sm md:text-xl text-nitro-space font-source font-bold'>
               Add new shareholding
             </h2>
           </div>
-          {/* <div className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'> */}
           <div className='self-center'>
             <label
               htmlFor='ticker'

@@ -2,25 +2,15 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import {
-  AddShareForm,
-  ShareEditForm,
-  QuoteResponse,
-  TickerSearchData,
-  IShareDataToEdit,
-} from '@/types';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import { AddShareForm, IShareDataToEdit } from '@/types';
 
 import Edit from '../components/EditShare';
 import AddShare from '../components/AddShare';
 import { findTicker } from '@/app/utils/ticker.search.helper';
-import { fakeTickerData } from '@/app/utils/fakeTickerData';
 import { useGlobalContext } from '../components/UserContext';
 import Button from '../components/Button';
 import { decimalFormatter } from '../utils/numberFormat.helper';
-import prisma from '../utils/prisma.library';
-import { createModuleResolutionCache } from 'typescript';
 
 interface IShareData {
   id: string;
@@ -36,31 +26,11 @@ interface IShareData {
   bookCost: number;
 }
 
-//value = quantity * price
-
 const page = () => {
   const { payloadData } = useGlobalContext();
-  const [underline, setUnderline] = useState<string>('investments');
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showAddShare, setShowAddShare] = useState<boolean>(false);
-  const [bookCost, setBookCost] = useState<number>(400);
   const [shareData, setShareData] = useState<IShareData[]>();
-
-  // const handleUnderline = () => {
-  //   if (underline === 'investments') {
-  //     setUnderline('orders');
-  //   } else {
-  //     setUnderline('investments');
-  //   }
-  // };
-
-  // const [shareEditForm, setShareEditForm] = React.useState<ShareEditForm[]>([]);
-
-  // export type ShareEditForm = {
-  //   bookCost: number;
-  //   quantity: number;
-  //   ticker: TickerSearchData;
-  // };
 
   const [shareDataToEdit, setShareDataToEdit] = useState<IShareDataToEdit>({
     id: '',
@@ -68,12 +38,6 @@ const page = () => {
     bookCost: 0,
     quantity: 0,
   });
-
-  // export interface IShareDataToEdit {
-  //   symbol: string;
-  //   bookCost: number;
-  //   quantity: number;
-  // }
 
   const [addShareForm, setAddShareForm] = React.useState<AddShareForm>({
     bookCost: 0,
@@ -94,14 +58,12 @@ const page = () => {
         website: '',
       },
     },
-    // userId: '',
   });
 
   useEffect(() => {
     getPortfolioQuotes();
   }, [payloadData]);
 
-  //can I make getPortfolioQuotes a server action and import it?
   const getPortfolioQuotes = async () => {
     if (payloadData) {
       try {
@@ -123,31 +85,16 @@ const page = () => {
     0
   );
 
-  // {decimalFormatter(data.price)} p
-
-  console.log('shareData: ', shareData);
-
   const totalValue: number | undefined = shareData?.reduce(
     (accumVal: number, currVal: IShareData) => {
-      // console.log('accumVal: ', accumVal);
-      // console.log('quantity: ', currVal.quantity);
-      // console.log('price: ', currVal.price);
-      // console.log(
-      //   'accumVal: ',
-      //   accumVal + +(currVal.quantity * currVal.price).toFixed(2) / 100
-      // );
-
       return accumVal + +((currVal.quantity * currVal.price) / 100).toFixed(2);
     },
     0
   );
 
-  // tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
-
   const tickerSearch = async (data: string) => {
     const response = await findTicker(data);
     return response;
-    // if (fakeTickerData) return fakeTickerData;
   };
 
   const handleCloseEdit = () => {
@@ -164,10 +111,6 @@ const page = () => {
     bookCost: number,
     quantity: number
   ) => {
-    // setShareDataToEdit((prevStat) => [
-    //   ...prevStat,
-    //   { symbol: symbol, bookCost: bookCost, quantity: quantity },
-    // ]);
     setShareDataToEdit({
       id: id,
       symbol: symbol,
@@ -226,29 +169,6 @@ const page = () => {
       quantity: 0,
     });
   };
-
-  // setShareData((prevState) => ([
-  //   ...(prevState || []), shareToAdd]
-  // ));
-
-  //from nitro
-  // const addNewContribution = async (
-  //   studentId: string,
-  //   formData: IAddExtraContributionForm
-  // ): Promise<IExtraContribution | null> => {
-  //   try {
-  //     const { name, amount, startDate, endDate, frequency } = formData;
-  //     const response = await Axios({
-  //       method: "POST",
-  //       url: `/api/contribution/${studentId}`,
-  //       data: {
-  //         name,
-  //         amount: Number(amount),
-  //         frequency,
-  //         startDate,
-  //         endDate,
-  //       },
-  //     });
 
   const onConfirmAddShare = async (
     addShareForm: AddShareForm,
@@ -325,20 +245,8 @@ const page = () => {
           website: '',
         },
       },
-      // userId: '',
     });
   };
-
-  // const handleAddNewCollege = async (formData: IAddCollegeForm) => {
-  // const newCollege = await addNewCollege(studentId, formData);
-
-  // if (newCollege) {
-  //   setSelectedColleges([...selectedColleges, newCollege]);
-  //   await addCostOfAttendance(newCollege.id);
-  // }
-  // window.heap.track("Add College Form Submission");
-  // return newCollege;
-  // };
 
   return (
     <main className='flex h-screen flex-col items-center bg-slate-200'>
@@ -359,43 +267,20 @@ const page = () => {
           {' '}
           <p className=''>Profit/Loss</p>
           <p className='font-semibold'>
-            {/* £ {decimalFormatter(+totalValue!.toFixed(2) - totalCost!)} */}£{' '}
-            {decimalFormatter(totalValue! - totalCost!)}
+            £ {decimalFormatter(totalValue! - totalCost!)}
           </p>
         </div>
       </div>
       <div className='bg-white drop-shadow-md  w-11/12 md:w-2/3 mt-5 px-2 py-5 overflow-auto'>
         <div className='flex flex-col'>
           <div className='flex flex-row'>
-            {underline === 'investments' ? (
-              <>
-                <h2 className={'font-semibold text-base pb-2 mr-2'}>
-                  {' '}
-                  Investments
-                </h2>
-              </>
-            ) : (
-              <>
-                <h2
-                  className={'font-normal text-base pb-2 mr-2'}
-                  // onClick={handleUnderline}
-                >
-                  Investments
-                </h2>
-                {/* <h2
-                  className={
-                    'font-semibold text-base pb-2 mr-2  decoration-indigo-500 decoration-4 underline underline-offset-4'
-                  }
-                >
-                  Orders
-                </h2> */}
-              </>
-            )}
+            <h2 className={'font-semibold text-base pb-2 mr-2'}>
+              {' '}
+              Investments
+            </h2>
           </div>
           <div className='flex flex-row text-xs'>
-            <div className='basis-3/4 flex flex-row'>
-              {/* <p className='flex text-red-400'>Updated at {Date()}</p> */}
-            </div>
+            <div className='basis-3/4 flex flex-row'></div>
           </div>
         </div>
         <table className='border-separate w-full '>
@@ -411,9 +296,7 @@ const page = () => {
           </thead>
           <tbody>
             {shareData?.map((data) => (
-              /* {fakeTickerData?.map((data) => ( */
-              // <tr key={uuidv4()} className='text-blue-700 font-bold text-sm'>
-              <tr key={data.id} className='bg-red-400'>
+              <tr key={data.id}>
                 <td className='flex flex-row'>
                   <div className='flex flex-col text-blue-700 font-bold text-sm'>
                     {data.symbol}
@@ -431,11 +314,10 @@ const page = () => {
                 <td className='text-black font-normal text-xs text-center'>
                   {decimalFormatter(data.price)} p
                 </td>
-                <td className='text-black font-normal text-xs text-center border border-red-500'>
-                  {/* £ {data.quantity * +(data.price / 100).toFixed(2)} */}£{' '}
-                  {(data.quantity * +(data.price / 100)).toFixed(2)}
+                <td className='text-black font-normal text-xs text-center'>
+                  £ {(data.quantity * +(data.price / 100)).toFixed(2)}
                 </td>
-                <td className='flex flex-row gap-2 text-black font-normal text-xs justify-center h-full items-center border border-blue-700'>
+                <td className='flex flex-row gap-2 text-black font-normal text-xs justify-center h-full items-center'>
                   <Image
                     className=' ml-1 cursor-pointer'
                     src='./edit.svg'
@@ -494,7 +376,6 @@ const page = () => {
           tickerSearch={tickerSearch}
         />
       ) : null}
-      {/* </div> */}
     </main>
   );
 };

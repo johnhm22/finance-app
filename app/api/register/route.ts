@@ -8,7 +8,6 @@ import { IRegisterForm } from '@/types';
 
 const prisma = new PrismaClient();
 
-// POST
 export async function POST(request: Request) {
   const data: IRegisterForm = await request.json();
   try {
@@ -24,9 +23,9 @@ export async function POST(request: Request) {
       throw new Error('Invalid data', errors);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10); //generates salt and then hashedPassword
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         firstName,

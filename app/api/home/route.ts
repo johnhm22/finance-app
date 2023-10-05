@@ -13,7 +13,6 @@ export async function GET(request: Request, res: NextResponse) {
         username: username,
       },
     });
-    console.log('user: ', user);
   } catch (error) {
     return NextResponse.json({ Error: error });
   }

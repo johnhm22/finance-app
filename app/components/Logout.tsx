@@ -1,16 +1,13 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import { deleteCookies } from '../utils/deleteCookies';
 import { getUserId } from '../utils/getUserId';
 import { useGlobalContext } from './UserContext';
-import Link from 'next/link';
 
 const Logout = () => {
-  const router = useRouter();
-
   const { setPayloadData } = useGlobalContext();
   useEffect(() => {
     const removeCookies = async () => {
@@ -18,7 +15,6 @@ const Logout = () => {
     };
     removeCookies();
     const payload = getUserId();
-    console.log('payload after logout :', payload);
     setPayloadData(payload);
   }, []);
 

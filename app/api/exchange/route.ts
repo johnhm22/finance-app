@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -20,7 +20,6 @@ export async function GET() {
 
     const data = result.map((res) => res.data);
     const resolvedData = data.flat();
-    console.log('resolvedData: ', resolvedData);
 
     return NextResponse.json({ resolvedData: resolvedData });
   } catch (error) {

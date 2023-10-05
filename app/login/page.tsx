@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 
 import Login from '../components/Login';
@@ -27,7 +27,6 @@ const page = () => {
       });
       if (user.statusText === 'OK') {
         const payload = await getUserId();
-        console.log('payload after login:', payload);
         setPayloadData(payload);
       }
       router.push('./home');
