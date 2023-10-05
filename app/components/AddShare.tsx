@@ -3,7 +3,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 
 import { AddShareForm, TickerData, TickerResponse } from '@/types';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import TickerSelect from './TickerSelect';
 import { useGlobalContext } from './UserContext';
 import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
@@ -48,6 +48,12 @@ const AddShare = ({
     useState<boolean>(false);
 
   const [tickerList, setTickerList] = useState<TickerData[]>([]);
+
+  useEffect(() => {
+    return () => {
+      debouncedChangeHandler.cancel();
+    };
+  }, []);
 
   const handleTickerSearchChange = async (
     e: React.ChangeEvent<HTMLInputElement>

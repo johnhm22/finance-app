@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { ILoginForm } from '@/types';
-import { update } from 'lodash';
 
 const prisma = new PrismaClient();
 
