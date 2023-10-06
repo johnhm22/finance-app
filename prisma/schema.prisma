@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("POSTGRES_PRISMA_URL")
+//   directUrl = env("POSTGRES_URL_NON_POOLING")
+// }
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id         String       @id @default(uuid())
+  firstName  String
+  lastName   String
+  password   String
+  username   String       @unique
+  createdAt  DateTime     @default(now())
+  stocksheld StocksHeld[]
+}
+
+model StocksHeld {
+  id               String   @id @default(uuid())
+  symbol           String
+  share_name       String
+  exchange_acronym String
+  mic              String
+  exchange_name    String
+  exchange_country String
+  exchange_city    String
+  bookCost         Int
+  quantity         Int
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
