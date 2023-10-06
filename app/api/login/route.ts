@@ -53,6 +53,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
       .setIssuedAt()
       .sign(new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!));
 
+    console.log('accessToken: ', accessToken);
+    console.log('refreshToken: ', refreshToken);
+
+    // const accessToken = jwt.sign(
+    //   updatedUser,
+    //   process.env.ACCESS_TOKEN_SECRET!,
+    //   { expiresIn: 10 }
+    // );
+
+    // const refreshToken = jwt.sign(
+    //   updatedUser,
+    //   process.env.REFRESH_TOKEN_SECRET!
+    // );
+
     // const signToken = async (
     //   payload: Record<string, any>,
     //   expiresIn: number
