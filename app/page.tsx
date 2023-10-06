@@ -52,7 +52,10 @@ const Landing = async () => {
         <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
           <tbody>
             {exchangeData?.map((exchange) => (
-              <tr className='border-b-2 border-gray-300 h-16'>
+              <tr
+                key={exchange.data[0].symbol}
+                className='border-b-2 border-gray-300 h-16'
+              >
                 <td className='w-36'>
                   <span className='font-normal'>
                     {/* {ExchangeAcronym.FTSE} */}
