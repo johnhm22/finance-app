@@ -254,7 +254,7 @@ const page = () => {
         <p className='font-semibold items-center'>Summary</p>
         <div className='flex flex-col'>
           <p className=''>Total Value</p>
-          <p className='font-semibold'>£ {totalValue}</p>
+          <p className='font-semibold'>£ {totalValue?.toFixed(2)}</p>
         </div>
 
         <div className='flex flex-col'>
