@@ -9,6 +9,7 @@ import TickerSelect from './TickerSelect';
 import { useGlobalContext } from './UserContext';
 import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
 
+
 interface IProps {
   handleCloseAddShare: () => void;
   onSubmit: (arg: AddShareForm, userId: string) => void;

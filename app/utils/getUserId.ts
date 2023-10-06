@@ -1,10 +1,10 @@
 'use server';
 
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import { verifyToken } from './jwt.helper';
 
-export const getUserId = (): JwtPayload | null | string => {
-  const codedPayload = cookies().get('accessToken')?.value;
-  const payload = jwt.decode(codedPayload!);
+export const getUserId = async () => {
+  const codedPayload = cookies().get('accessToken');
+  const payload = await verifyToken(codedPayload!.value);
   return payload;
 };

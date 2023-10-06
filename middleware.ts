@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken } from './app/utils/jwt.helper';
 
 export const middleware = async (
   req: NextRequest,
@@ -12,17 +12,7 @@ export const middleware = async (
     console.log('there is no accessToken');
     return NextResponse.redirect('http://localhost:3000/login');
   }
-
-  jwt.verify(
-    accessToken!.toString()!,
-    process.env.ACCESS_TOKEN_SECRET!,
-    (err, user) => {
-      if (err)
-        return new NextResponse(
-          JSON.stringify({ message: 'authentication failed' })
-        );
-    }
-  );
+  await verifyToken(accessToken.value);
 };
 
 export const config = {
