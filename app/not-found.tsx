@@ -11,7 +11,7 @@ export default function NotFound() {
             <h2 className='text-2xl font-bold'>activeInvestor</h2>
           </div>
           <h2 className='sm:text-xl text-lg mt-10'>
-            Sorry, we couldn't find that page.
+            Sorry, we couldn&apos;t find that page.
           </h2>
           <Link href='/' className=' mt-20 w-2/3'>
             <button className='flex bg-orange-500 justify-center items-center rounded-full h-12 w-full text-black font-semibold text-base px-5'>
