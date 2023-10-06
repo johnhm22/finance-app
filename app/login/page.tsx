@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useGlobalContext } from '../components/UserContext';
 import { getUserId } from '../utils/getUserId';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
 
   const { setPayloadData } = useGlobalContext();
@@ -44,4 +44,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

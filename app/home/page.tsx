@@ -26,7 +26,7 @@ interface IShareData {
   bookCost: number;
 }
 
-const page = () => {
+const Page = () => {
   const { payloadData } = useGlobalContext();
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showAddShare, setShowAddShare] = useState<boolean>(false);
@@ -380,4 +380,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

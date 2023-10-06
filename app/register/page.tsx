@@ -7,7 +7,7 @@ import axios from 'axios';
 import Register from '@/app/components/Register';
 import { IRegisterForm } from '@/types';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
 
   const onRegister = async (data: IRegisterForm) => {
@@ -34,4 +34,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
