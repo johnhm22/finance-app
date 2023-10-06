@@ -2,7 +2,7 @@ import React, { FormEvent, FormEventHandler, useRef } from 'react';
 // import Image from 'next/image';
 
 import { AddShareForm, IShareDataToEdit, ShareEditForm } from '@/types';
-import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
+import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 interface IProps {
   handleCloseEdit: () => void;
@@ -25,7 +25,7 @@ const Edit = ({
   };
 
   const editShareComponentRef = useRef(null);
-  closeOnOutsideClick(editShareComponentRef, handleCloseEdit);
+  CloseOnOutsideClick(editShareComponentRef, handleCloseEdit);
 
   // const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const { value, name } = e.target;

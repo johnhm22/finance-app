@@ -7,8 +7,7 @@ import { AddShareForm, TickerData, TickerResponse } from '@/types';
 
 import TickerSelect from './TickerSelect';
 import { useGlobalContext } from './UserContext';
-import { closeOnOutsideClick } from '../utils/closeOnOutsideClick';
-
+import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 interface IProps {
   handleCloseAddShare: () => void;
@@ -37,7 +36,7 @@ const AddShare = ({
 
   const addShareComponentRef = useRef(null);
 
-  closeOnOutsideClick(addShareComponentRef, handleCloseAddShare);
+  CloseOnOutsideClick(addShareComponentRef, handleCloseAddShare);
 
   const saveSelectedTickerInForm = (ticker: TickerData) => {
     setAddShareForm((prevState) => ({
