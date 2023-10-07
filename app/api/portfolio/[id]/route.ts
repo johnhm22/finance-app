@@ -3,7 +3,6 @@ import { StocksHeld } from '@prisma/client';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
-// GET
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -28,8 +27,9 @@ export async function GET(
           process.env.MARKETSTACK_ACCESS_KEY
         }&symbols=${symbolArray.toString()}`,
       });
+
       if (quoteCall) {
-        quoteCall.data.data.forEach((el: object, idx: number) => {
+        quoteCall.data.data.forEach((el: { close: number }, idx: number) => {
           stocksHeld[idx].price = el.close;
         });
       }
