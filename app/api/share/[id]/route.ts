@@ -2,7 +2,10 @@ import prisma from '@/app/utils/prisma.library';
 import { validateDeleteShare } from '@/app/validations/api-validations/share';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function DELETE(request: NextRequest, { params }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
   try {
     const result = validateDeleteShare(id);
@@ -17,7 +20,10 @@ export async function DELETE(request: NextRequest, { params }) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
   const { symbol, bookCost, quantity } = await request.json();
 

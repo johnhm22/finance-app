@@ -1,10 +1,13 @@
 import prisma from '@/app/utils/prisma.library';
 import { StocksHeld } from '@prisma/client';
 import axios from 'axios';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 // GET
-export async function GET(request: Request, { params }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
   try {
     const stocksHeld: StocksHeld[] = await prisma.stocksHeld.findMany({
