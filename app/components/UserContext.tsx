@@ -1,30 +1,47 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { getUserId } from '@/app/utils/getUserId';
 import { Payload } from '@/types';
-import { JwtPayload } from 'jsonwebtoken';
 
-// const UserIdContext = createContext<JwtPayload>({
-//   exp: 0,
-//   firstName: '',
-//   iat: 0,
-//   id: '',
-//   lastName: '',
-//   role: '',
-//   username: '',
-// });
+export type GlobalContent = {
+  payloadData: Record<string, any>;
+  setPayloadData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+};
 
-const UserIdContext = createContext({});
+const UserIdContext = createContext<GlobalContent>({
+  payloadData: {
+    exp: 0,
+    firstName: '',
+    iat: 0,
+    id: '',
+    lastName: '',
+    role: '',
+    username: '',
+  },
+  setPayloadData: () => {},
+});
 
-// type Children = React.FC
-
-export const UserIdProvider = ({ children }) => {
-  const [payloadData, setPayloadData] = useState<JwtPayload | string | null>();
+export const UserIdProvider = ({ children }: { children: ReactNode }) => {
+  const [payloadData, setPayloadData] = useState<Record<string, any>>({
+    exp: 0,
+    firstName: '',
+    iat: 0,
+    id: '',
+    lastName: '',
+    role: '',
+    username: '',
+  });
 
   const getPayload = async () => {
-    const payload = await getUserId();
+    const payload: Record<string, any> = await getUserId();
     setPayloadData(payload);
   };
 
