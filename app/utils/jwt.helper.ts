@@ -1,4 +1,4 @@
-import { jwtVerify } from 'jose';
+import { jwtVerify, errors } from 'jose';
 import { NextResponse } from 'next/server';
 
 export const verifyToken = async (
@@ -15,7 +15,10 @@ export const verifyToken = async (
     return payload;
   } catch (e) {
     console.log('Error: ', e);
-    if (e.code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED') {
+    if (
+      e instanceof errors.JOSEError &&
+      e.code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED'
+    ) {
       return NextResponse.redirect('http://localhost:3000/login');
     }
   }
