@@ -1,7 +1,7 @@
 import { useEffect, MutableRefObject } from 'react';
 
 type OnClickOutside = () => void;
-type Ref = MutableRefObject<T>;
+type Ref = MutableRefObject<HTMLDivElement | null>;
 
 export const CloseOnOutsideClick = (
   ref: Ref,
