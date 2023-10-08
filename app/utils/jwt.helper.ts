@@ -19,7 +19,7 @@ export const verifyToken = async (
       e instanceof errors.JOSEError &&
       e.code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED'
     ) {
-      return NextResponse.redirect('http://localhost:3000/login');
+      return NextResponse.redirect(`${process.env.BASE_URL}/login`);
     }
   }
   return new NextResponse(

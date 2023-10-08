@@ -10,7 +10,7 @@ export const middleware = async (
 
   if (!accessToken) {
     console.log('there is no accessToken');
-    return NextResponse.redirect('http://localhost:3000/login');
+    return NextResponse.redirect(`${process.env.BASE_URL}/login`);
   }
   await verifyToken(accessToken.value);
 };
