@@ -1,5 +1,5 @@
 import { jwtVerify } from 'jose';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export const verifyToken = async (
   token: string
