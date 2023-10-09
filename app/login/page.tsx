@@ -28,6 +28,7 @@ const Page = () => {
       console.log('user returned from login: ', user);
       if (user.statusText === 'OK') {
         const payload = await getUserId();
+        console.log('payload returned from getUserId: ', payload);
         setPayloadData(payload);
       }
       router.push('./home');
