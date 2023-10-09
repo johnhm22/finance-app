@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 import { deleteCookies } from '../utils/deleteCookies';
-import { getUserId } from '../utils/getUserId';
 import { useGlobalContext } from './UserContext';
 
 const Logout = () => {
@@ -14,8 +13,15 @@ const Logout = () => {
       await deleteCookies();
     };
     removeCookies();
-    const payload = getUserId();
-    setPayloadData(payload);
+    setPayloadData({
+      exp: 0,
+      firstName: '',
+      iat: 0,
+      id: '',
+      lastName: '',
+      role: '',
+      username: '',
+    });
   }, []);
 
   return (
