@@ -25,6 +25,7 @@ const Page = () => {
           password,
         },
       });
+      console.log('user returned from login: ', user);
       if (user.statusText === 'OK') {
         const payload = await getUserId();
         setPayloadData(payload);
