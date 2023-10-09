@@ -254,7 +254,7 @@ const Page = () => {
         <p className='font-semibold items-center'>Summary</p>
         <div className='flex flex-col'>
           <p className=''>Total Value</p>
-          <p className='font-semibold'>£ {totalValue?.toFixed(2)}</p>
+          <p className='font-semibold'>£ {decimalFormatter(totalValue!)}</p>
         </div>
 
         <div className='flex flex-col'>
@@ -315,7 +315,10 @@ const Page = () => {
                   {decimalFormatter(data.price)} p
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                  £ {(data.quantity * +(data.price / 100)).toFixed(2)}
+                  £{' '}
+                  {decimalFormatter(
+                    +(data.quantity * +(data.price / 100)).toFixed(2)
+                  )}
                 </td>
                 <td className='flex flex-row gap-2 text-black font-normal text-xs justify-center h-full items-center'>
                   <Image
