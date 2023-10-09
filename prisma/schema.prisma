@@ -11,6 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+//local settings
 // datasource db {
 //   provider          = "postgresql"
 //   url               = env("DATABASE_URL")
