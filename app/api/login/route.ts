@@ -2,11 +2,9 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { jwtVerify, SignJWT } from 'jose';
 
 import { ILoginForm } from '@/types';
-import { runInNewContext } from 'vm';
 
 const prisma = new PrismaClient();
 
