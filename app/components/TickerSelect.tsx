@@ -21,10 +21,7 @@ const TickerSelect: React.FC<IProps> = ({
   handleTickerSearchChange,
   onTickerSelect,
 }) => {
-  const handleSaveTicker = (
-    e: React.MouseEvent<HTMLElement>,
-    ticker: TickerData
-  ) => {
+  const handleSaveTicker = (ticker: TickerData) => {
     onTickerSelect(ticker);
   };
   return (
@@ -50,7 +47,7 @@ const TickerSelect: React.FC<IProps> = ({
                 id={ticker.symbol}
                 key={idx}
                 className='px-4 py-2 text-gray-700 hover:bg-white cursor-pointer'
-                onClick={(e) => handleSaveTicker(e, ticker)}
+                onClick={(e) => handleSaveTicker(ticker)}
               >
                 {ticker.name} &nbsp;&nbsp;{ticker.symbol}&nbsp;
                 {ticker.stock_exchange.name}
