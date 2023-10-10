@@ -20,7 +20,7 @@ const Landing = async () => {
       <div className='mt-14 md:h-[25rem] h-[35rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
         <div className='flex flex-col pt-10 pl-10'>
           <h1 className='font-bold text-3xl'>
-            Welcome to your personal share app - trial version
+            Welcome to your personal share app
           </h1>
           <div className='font-semibold text-2xl mt-5'>
             Join now for <span className='text-orange-500'>free</span> and
