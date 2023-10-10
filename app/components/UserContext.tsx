@@ -41,7 +41,7 @@ export const UserIdProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const getPayload = async () => {
-    const payload: Record<string, any> = await getUserId();
+    const payload: Record<string, any | undefined> = await getUserId();
     setPayloadData(payload);
   };
 
