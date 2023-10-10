@@ -10,10 +10,7 @@ export const middleware = async (
 
   if (!accessToken) {
     console.log('there is no accessToken');
-    // return NextResponse.redirect(`${process.env.BASE_URL}/login`);
-    return NextResponse.redirect(
-      `https://vercel.com/johnhm22/finance-app/AZgbiDt7opjtSQBcnoTLA1oK6HXt/login`
-    );
+    return NextResponse.redirect(`${process.env.BASE_URL}/login`);
   }
   await verifyToken(accessToken.value);
 };
