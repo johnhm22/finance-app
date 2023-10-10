@@ -1,7 +1,7 @@
-import React, { FormEvent, FormEventHandler, useRef } from 'react';
+import React, { useRef } from 'react';
 // import Image from 'next/image';
 
-import { AddShareForm, IShareDataToEdit, ShareEditForm } from '@/types';
+import { IShareDataToEdit } from '@/types';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 interface IProps {
@@ -27,38 +27,17 @@ const Edit = ({
   const editShareComponentRef = useRef(null);
   CloseOnOutsideClick(editShareComponentRef, handleCloseEdit);
 
-  // const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value, name } = e.target;
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [name]: value,
-  //   }));
-  // };
-
   const handleOnConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // onSubmit(shareEditForm, shareDataToEdit[0].symbol);
     onSubmit(shareDataToEdit);
   };
-
-  // export interface IShareDataToEdit {
-  //   symbol: string;
-  //   bookCost: number;
-  //   quantity: number;
-  // }
 
   return (
     <div
       ref={editShareComponentRef}
-      // className='flex flex-col absolute bg-white border shadow-md w-1/3 h-2/3 px-5 pt-12'
       className='flex flex-col absolute bg-white border shadow-md mt-20 w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'
     >
-      <form
-        // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
-        //   .replace(/ +/g, '-')
-        //   .toLowerCase()}`}
-        onSubmit={handleOnConfirm}
-      >
+      <form onSubmit={handleOnConfirm}>
         <div className='p-5 '>
           <div>
             <div className={`items-center self-start`}>
@@ -101,24 +80,6 @@ const Edit = ({
               />
             </div>
           </div>
-          {/* <div className='self-end flex gap-1 items-center justify-end mt-3'>
-              {' '}
-              <button
-                className='bg-red-400 rounded p-1 hover:bg-red-500 text-xs'
-                onClick={handleClose}
-              >
-                Cancel
-              </button>
-              <div className='self-end flex items-center justify-end'>
-                {' '}
-                <button
-                  type='submit'
-                  className='bg-blue-400 rounded p-1 hover:bg-blue-500 text-xs'
-                >
-                  Update
-                </button>
-              </div>
-            </div> */}
           <button
             type='submit'
             className='flex bg-blue-700 mt-12 justify-center items-center rounded-full h-12 w-full p-5 hover:bg-blue-800 text-xl text-white'
