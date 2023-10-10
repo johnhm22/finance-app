@@ -224,7 +224,6 @@ const Page = () => {
     } catch (e) {
       console.log('Error: ', e);
     }
-    //need to close form
     setShowAddShare(false);
     setAddShareForm({
       bookCost: 0,
@@ -267,7 +266,7 @@ const Page = () => {
           {' '}
           <p className=''>Profit/Loss</p>
           <p className='font-semibold'>
-            £ {decimalFormatter(totalValue! - totalCost!)}
+            £ {decimalFormatter(+(totalValue! - totalCost!))}
           </p>
         </div>
       </div>
@@ -312,13 +311,10 @@ const Page = () => {
                   {data.bookCost}p
                 </td>
                 <td className='text-black font-normal text-xs text-center'>
-                  {decimalFormatter(data.price)} p
+                  {decimalFormatter(+data.price)}p
                 </td>
-                <td className='text-black font-normal text-xs text-center'>
-                  £{' '}
-                  {decimalFormatter(
-                    +(data.quantity * +(data.price / 100)).toFixed(2)
-                  )}
+                <td className='text-black font-normal text-xs text-right'>
+                  £ {decimalFormatter(+(data.quantity * +(data.price / 100)))}
                 </td>
                 <td className='flex flex-row gap-2 text-black font-normal text-xs justify-center h-full items-center'>
                   <Image
@@ -359,7 +355,7 @@ const Page = () => {
           />
         </div>
         <div className='justify-start font-light text-sm italic'>
-          Value = end of day
+          Price = end of day
         </div>
       </div>
       {showEdit ? (
