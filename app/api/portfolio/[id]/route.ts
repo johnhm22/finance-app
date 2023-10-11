@@ -1,14 +1,15 @@
 import prisma from '@/app/utils/prisma.library';
+import { isValidUUId } from '@/app/validations/validation-functions/uuid.validation';
 import { StocksHeld } from '@prisma/client';
 import axios from 'axios';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET({ params }: { params: { id: string } }) {
   const { id } = params;
   try {
+    if (!isValidUUId(id)) {
+      throw new Error('Invalid user id');
+    }
     const stocksHeld: StocksHeld[] = await prisma.stocksHeld.findMany({
       where: {
         userId: id.trim(),
