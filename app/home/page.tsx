@@ -158,8 +158,9 @@ const Page = () => {
         if (updatedShareIndex !== -1) {
           prevState![updatedShareIndex!] = response.data.updatedShare;
         }
-        return prevState;
+        return [...prevState!];
       });
+      getPortfolioQuotes();
     }
     setShowEdit(false);
     setShareDataToEdit({
