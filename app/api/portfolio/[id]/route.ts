@@ -2,9 +2,12 @@ import prisma from '@/app/utils/prisma.library';
 import { isValidUUId } from '@/app/validations/validation-functions/uuid.validation';
 import { StocksHeld } from '@prisma/client';
 import axios from 'axios';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
   try {
     if (!isValidUUId(id)) {
