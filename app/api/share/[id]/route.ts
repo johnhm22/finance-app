@@ -1,5 +1,6 @@
 import prisma from '@/app/utils/prisma.library';
 import { validateDeleteShare } from '@/app/validations/api-validations/share';
+import { isValidUUId } from '@/app/validations/validation-functions/uuid.validation';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(
@@ -8,6 +9,9 @@ export async function DELETE(
 ) {
   const { id } = params;
   try {
+    if (!isValidUUId(id)) {
+      throw new Error('Invalid user id');
+    }
     const result = validateDeleteShare(id);
     await prisma.stocksHeld.delete({
       where: {
