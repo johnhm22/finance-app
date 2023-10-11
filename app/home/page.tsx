@@ -289,7 +289,7 @@ const Page = () => {
               <th className='p-2 w-40'>Symbol/Name</th>
               <th className='p-2 w-32'>Quantity</th>
               <th className='p-2 w-32'>Book Cost</th>
-              <th className='p-2'>Price</th>
+              <th className='p-2'>Price*</th>
               <th className=' p-2'>Value</th>
               <th className='p-2'>Edit/delete</th>
             </tr>
@@ -355,8 +355,11 @@ const Page = () => {
             onClick={() => setShowAddShare(true)}
           />
         </div>
-        <div className='justify-start font-light text-sm italic'>
-          Price = end of day
+        <div className='flex flex-row justify-between mt-4'>
+          <div className='font-light text-sm italic'>* Price = end of day</div>
+          <div className='font-light text-sm italic'>
+            Currently available only for London Stock Exchange
+          </div>
         </div>
       </div>
       {showEdit ? (
