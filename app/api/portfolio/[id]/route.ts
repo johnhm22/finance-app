@@ -13,6 +13,9 @@ export async function GET(
       where: {
         userId: id.trim(),
       },
+      orderBy: {
+        symbol: 'asc',
+      },
     });
 
     if (stocksHeld) {
