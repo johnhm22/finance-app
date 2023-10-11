@@ -47,7 +47,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     cookies().set('accessToken', accessToken, {
       httpOnly: true,
-      // expires: Date.now() + 15,
     });
 
     cookies().set('refreshToken', refreshToken, {
@@ -55,8 +54,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
 
     return NextResponse.json({
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      message: 'login successful',
     });
   } catch (error) {
     return NextResponse.json({ Error: error });
