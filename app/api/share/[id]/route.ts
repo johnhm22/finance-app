@@ -1,5 +1,8 @@
 import prisma from '@/app/utils/prisma.library';
-import { validateDeleteShare } from '@/app/validations/api-validations/share';
+import {
+  validateDeleteShare,
+  validateEditShare,
+} from '@/app/validations/api-validations/share';
 import { isValidUUId } from '@/app/validations/validation-functions/uuid.validation';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -32,7 +35,10 @@ export async function PUT(
   const { symbol, bookCost, quantity } = await request.json();
 
   try {
-    const result = validateDeleteShare(id);
+    if (!isValidUUId(id)) {
+      throw new Error('Invalid user id');
+    }
+    const result = validateEditShare(symbol, bookCost, quantity);
     const updatedShare = await prisma.stocksHeld.update({
       where: {
         id: id,
