@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import { jwtVerify, SignJWT } from 'jose';
+import { SignJWT } from 'jose';
 
 import { ILoginForm } from '@/types';
 
@@ -33,14 +33,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       role: 'admin',
     };
 
-    // const accessToken = jwt.sign(
-    //   updatedUser,
-    //   process.env.ACCESS_TOKEN_SECRET!,
-    //   { expiresIn: 10 }
-    // );
-
     const accessToken = await new SignJWT(updatedUser)
-      .setExpirationTime('2h')
+      .setExpirationTime('15m')
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .sign(new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET!));
@@ -50,30 +44,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .sign(new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!));
-
-    // const accessToken = jwt.sign(
-    //   updatedUser,
-    //   process.env.ACCESS_TOKEN_SECRET!,
-    //   { expiresIn: 10 }
-    // );
-
-    // const refreshToken = jwt.sign(
-    //   updatedUser,
-    //   process.env.REFRESH_TOKEN_SECRET!
-    // );
-
-    // const signToken = async (
-    //   payload: Record<string, any>,
-    //   expiresIn: number
-    // ): Promise<string> => {
-    //   const currentSeconds = Math.floor(Date.now() / 1000);
-
-    //   return new SignJWT(payload)
-    //     .setExpirationTime(currentSeconds + expiresIn)
-    //     .setProtectedHeader({ alg: "HS256" })
-    //     .setIssuedAt()
-    //     .sign(new TextEncoder().encode(JWT_SECRET));
-    // };
 
     cookies().set('accessToken', accessToken, {
       httpOnly: true,
