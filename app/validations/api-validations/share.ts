@@ -54,3 +54,25 @@ export const validateDeleteShare = (id: string) => {
   }
   return { errors, isValid: Object.keys(errors).length <= 0 };
 };
+
+export const validateEditShare = (
+  symbol: string,
+  bookCost: number,
+  quantity: number
+) => {
+  const errors: any = {};
+
+  if (typeof symbol !== 'string' || symbol === undefined) {
+    errors.bookCost = 'Please enter a valid ticker symbol';
+  }
+
+  if (typeof bookCost !== 'number' || bookCost === undefined) {
+    errors.bookCost = 'Please enter a valid bookcost';
+  }
+
+  if (typeof quantity !== 'number' || quantity === undefined) {
+    errors.quantity = 'Please enter a valid quantity';
+  }
+
+  return { errors, isValid: Object.keys(errors).length <= 0 };
+};
