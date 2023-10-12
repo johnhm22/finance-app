@@ -39,7 +39,7 @@ const Page = () => {
     quantity: 0,
   });
 
-  const [addShareForm, setAddShareForm] = React.useState<AddShareForm>({
+  const [addShareForm, setAddShareForm] = useState<AddShareForm>({
     bookCost: 0,
     quantity: 0,
     ticker: {
