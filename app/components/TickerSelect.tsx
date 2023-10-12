@@ -12,14 +12,15 @@ interface IProps {
   setOpenTickerListDropDown: React.Dispatch<React.SetStateAction<boolean>>;
   value?: string;
   addShareForm: AddShareForm | undefined;
-  handleTickerSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTickerSearchText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TickerSelect: React.FC<IProps> = ({
   tickerList,
   openTickerListDropDown,
-  handleTickerSearchChange,
   onTickerSelect,
+  addShareForm,
+  handleTickerSearchText,
 }) => {
   const handleSaveTicker = (ticker: TickerData) => {
     onTickerSelect(ticker);
@@ -30,8 +31,9 @@ const TickerSelect: React.FC<IProps> = ({
         <input
           placeholder='Enter name or ticker symbol'
           className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
-          onChange={handleTickerSearchChange}
+          onChange={handleTickerSearchText}
           // value={`${addShareForm?.ticker.symbol} ${addShareForm?.ticker.name}`}
+          value={addShareForm?.ticker.symbol}
         />
       </div>
       {openTickerListDropDown ? (
