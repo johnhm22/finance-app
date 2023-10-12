@@ -50,7 +50,9 @@ const AddShare = ({
 
   const [tickerList, setTickerList] = useState<TickerData[]>([]);
 
-  const [tickerSearchText, setTickerSearchText] = useState<string>('');
+  const [tickerSearchText, setTickerSearchText] = useState<{ ticker: string }>({
+    ticker: '',
+  });
 
   // useEffect(() => {
   //   return () => {
@@ -59,17 +61,18 @@ const AddShare = ({
   // }, []);
 
   const handleTickerSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setTickerSearchText((prevState) => {
-      return prevState + value;
-    });
+    const { value, name } = e.target;
+    setTickerSearchText((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
     debouncedTickerSearch(tickerSearchText);
   };
 
   const debouncedTickerSearch = useMemo(
     () =>
-      debounce(async (tickerSearchText: string) => {
-        const response = await tickerSearch(tickerSearchText);
+      debounce(async (tickerSearchText: { ticker: string }) => {
+        const response = await tickerSearch(tickerSearchText.ticker);
         if (response!.data) {
           setOpenTickerListDropDown(true);
           setTickerList(response!.data);
@@ -86,6 +89,7 @@ const AddShare = ({
   const handleOnConfirm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(addShareForm!, payloadData.id);
+    setTickerSearchText({ ticker: '' });
   };
 
   return (
@@ -115,6 +119,7 @@ const AddShare = ({
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
               addShareForm={addShareForm}
+              tickerSearchText={tickerSearchText}
             />
           </div>
           <div className='self-center'>
