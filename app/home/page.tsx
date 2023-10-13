@@ -358,7 +358,7 @@ const Page = () => {
         <div className='flex flex-row justify-between mt-4'>
           <div className='font-light text-sm italic'>* Price = end of day</div>
           <div className='font-light text-sm italic'>
-            Currently available only for London Stock Exchange
+            Currently only available for the London Stock Exchange
           </div>
         </div>
       </div>
