@@ -34,24 +34,24 @@ export async function POST(req: NextRequest, res: NextResponse) {
     };
 
     const accessToken = await new SignJWT(updatedUser)
-      .setExpirationTime('15m')
+      .setExpirationTime(process.env.ACCESS_TOKEN_DURATION!)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .sign(new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET!));
 
-    const refreshToken = await new SignJWT(updatedUser)
-      .setExpirationTime('2h')
-      .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
-      .sign(new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!));
+    // const refreshToken = await new SignJWT(updatedUser)
+    //   .setExpirationTime('2h')
+    //   .setProtectedHeader({ alg: 'HS256' })
+    //   .setIssuedAt()
+    //   .sign(new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!));
 
     cookies().set('accessToken', accessToken, {
       httpOnly: true,
     });
 
-    cookies().set('refreshToken', refreshToken, {
-      httpOnly: true,
-    });
+    // cookies().set('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    // });
 
     return NextResponse.json({
       message: 'login successful',
