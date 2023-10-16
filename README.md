@@ -1,4 +1,4 @@
-## Finance App
+## MyPortfolio
 
 ##  Purpose  
 The app was built partly as a training exercise, partly as a demonstration to potential employers of what I can do and partly to allow a family member to record his shareholdings rather than relying on the traditional pen and paper.
