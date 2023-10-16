@@ -71,3 +71,6 @@ Deploying to Vercel, a seamless process I had understood, was frustrating. Verce
 I only found this out when confronted with errors during the build process. This meant re-writing some of the code.  
 The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.
 
+## Credits
+The "look and feel" design was inpsired by [Intereactive Investor](https://www.ii.co.uk/)
+
