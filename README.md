@@ -71,6 +71,9 @@ Deploying to Vercel, a seamless process I had understood, was frustrating. Verce
 I only found this out when confronted with errors during the build process. This meant re-writing some of the code.  
 The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.
 
+## Where next?
+I'd like to find a workaround to the currency issue of displaying shares from exchanges in different countries. Then expand to the portfolio to include other investments such as gilts, bonds and trusts. Presenting further data (historical, financial results, broker predictions) for each investment also sounds fun.
+
 ## Credits
 The "look and feel" design was inpsired by [Intereactive Investor](https://www.ii.co.uk/)
 
