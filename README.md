@@ -29,39 +29,46 @@ The key elements are:
 * PostgreSQL
 
 The app has been deployed on Vercel which owns Next.js which naturally helps.
-The database is also provided by Vercel and works well with Prisma
+The database is also provided by Vercel and works well with Prisma. [Click here for details](https://vercel.com/docs/storage/vercel-postgres)
 
-Two external apis are used. One is from [MarketStack](https://marketstack.com/) where the stock data is obtained. The other is from [ExchangeRateApi](https://www.exchangerate-api.com/) for the currency rates displayed on the welcome page.
+Two external apis are used. One is from [MarketStack](https://marketstack.com/) where the stock data is obtained. The other is from [ExchangeRateApi](https://www.exchangerate-api.com/) for the currency rates displayed on the welcome page. One drawback with marketstack is that, on its free package, it doesn't allow calls from http only https. Thus working from your local machine poses a problem.
 
-It was hard to find a suitable api for shares. There are many available, but each seemed to have something missing. Finally, I settled with MarketStack which as a compromise. However, due to the way it presents its data, I have had to restrict the portfolio to the London Stock Exchange. It does not provide the currency or currency reference in either share or stock exchange data. Therefore, if a user has shares from different exchanges there is no simple way of separating these out into their relevant currencies.
+It was hard to find a suitable api for shares. There are many available, but each seemed to have something missing. Finally, I settled with MarketStack which as a compromise. However, due to the way it presents its data, I have had to restrict the portfolio to the London Stock Exchange. It does not provide the currency symbol or currency reference in either share or stock exchange data. Therefore, if a user has shares from different exchanges there is no simple way of separating these out into their relevant currencies.
+
+## Installation
+This shouldn't be too complicated.
+* Clone the repository on to your local machine.    
+* Run npm install to install all necessary packages  
+* Create an account with the api providers (note comments about marketstack above)  
+* Create a .env (or .env.local which Next.js uses) file and add in your personal data. A sample .env file is in the file directory so you know which variables are required  
+* Generate an access token secret for the json web token as shown below  
+* Install PostgreSQL locally or find a suitable remote alternative (see below)
+* Check the Prisma docs for migrating the Prisma schema to your PostgreSQL database. I used the command 'npx prisma migrate dev' and then added the name of the migration when prompted.
+* Once all completed, run 'npm run dev' in the terminal and navigate to 'localhost:3000'  
+
+### Creating the access token secret
+This was done quite simply by using the node crypto package. The command is shown below
+![image](https://github.com/johnhm22/finance-app/assets/71333679/d903d9ee-cc32-432e-a440-01fa105be606)
+
+## Setting up a PostgreSQL database
+In the past, I have used [elephantsql](https://www.elephantsql.com/) as a remote PostgreSQL database and found it straight forward and easy to use.  
+Unfrotuantely, when using Prisma during development, a shadow database needs to be defined and elephant don't offer this on their free packages. As a result, I used a locally installed 
+PostgreSQL database. This wasn't difficult as I was used to working with a local database it was just a bit annoying.
+
+## Next.js 13
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+## [Prisma ORM](https://www.prisma.io/)
+I like it. Quite easy to use and clear docs.  
+Click on the title to be taken to their webpage.
 
 
-
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
