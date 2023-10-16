@@ -3,7 +3,7 @@
 ##  Purpose  
 The app was built partly as a training exercise, partly as a demonstration to potential employers of what I can do and partly to allow a family member to record his shareholdings rather than relying on the traditional pen and paper.
 
-Next.js 13 had come out recently and I was keen to use this and so learn. Also, I had not used Tailwind to any great degree so this was a great opportunity to do so. In addition, having recently worked on a team building an app that involved a lot of checking and verification I was keen to follow this approach.
+Next.js 13 had come out recently and I was keen to use this, make lots of mistakes, get confused and so learn. Also, I had not used Tailwind to any great degree so this was a great opportunity to do so. In addition, having recently worked on a team building an app that took a thoroughly professional approach in terms of code structure and user verification I was keen to replicate it.
 
 ## What does the app do? 
 The core functionality allows a user to add into a table shares they own, adding purchase price, and quantity. The app will then retrieve the closing price from the previous trading day (eod) and display the value of each shareholding. A summary table is also present that provides totals of value, cost and profit/loss.
