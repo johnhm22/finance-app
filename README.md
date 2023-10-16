@@ -64,16 +64,10 @@ I like it. Quite easy to use and clear docs.
 Click on the title to be taken to their webpage.
 
 
+## Problems
+As mentioned above, I was disappointed not to be able to use elephantsql, but a local db worked out fine.
+Deploying to Vercel, a seamless process I had understood, was frustrating. Vercel offers their Edge Network which "enables you to store content and run compute in regions close to your customers or your data, reducing latency and improving end-user performance". However, with Edge, you cannot use Node.js apis in Edge functions.  
 
-## Learn More
+I only found this out when confronted with errors during the build process. This meant re-writing some of the code.  
+The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.
 
-To learn more about Next.js, take a look at the following resources:
-
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
