@@ -38,6 +38,9 @@ const Landing = async () => {
               textColour='text-blue-700'
             />
           </Link>
+          <Link href='./quick-quote' className='font-semibold mt-5 text-2xl'>
+            Try our <span className='text-orange-500'>free</span> quick quote
+          </Link>
         </div>
         <div className='pl-10'>
           <div className='rounded-full pt-6 bg-orange-500 text-white w-28 h-28 font-semibold text-lg items-center text-center mr-64 mt-10'>
