@@ -38,6 +38,11 @@ const Landing = async () => {
               textColour='text-blue-700'
             />
           </Link>
+          <br />
+          {/* <Link href='./quick-quote' className='font-semibold text-2xl mb-2'>
+            Try our <span className='text-orange-500'>free</span> quick quote
+            now
+          </Link> */}
         </div>
         <div className='pl-10'>
           <div className='rounded-full pt-6 bg-orange-500 text-white w-28 h-28 font-semibold text-lg items-center text-center mr-64 mt-10'>
@@ -58,20 +63,19 @@ const Landing = async () => {
               >
                 <td className='w-36'>
                   <span className='font-normal'>
-                    {/* {ExchangeAcronym.FTSE} */}
-                    {exchange.data[0].symbol.split('.')[0]}
-                  </span>{' '}
+                    {exchange.data[0].symbol.split('.')[0] === 'IXIC'
+                      ? 'NASDAQ'
+                      : exchange.data[0].symbol.split('.')[0]}
+                  </span>
                   <br />
                   <span className='font-semibold'>
-                    {decimalFormatter(+exchange.data[0].close.toFixed(2))}
+                    {decimalFormatter(+exchange.data[0].close)}
                   </span>
                 </td>
                 {exchange.data[0].close - exchange.data[0].open >= 0 ? (
                   <td className='w-60 text-end text-green-600'>
                     {decimalFormatter(
-                      +(exchange.data[0].close - exchange.data[0].open).toFixed(
-                        2
-                      )
+                      +(exchange.data[0].close - exchange.data[0].open)
                     )}{' '}
                     {(
                       (+(exchange.data[0].close - exchange.data[0].open) *
@@ -83,9 +87,7 @@ const Landing = async () => {
                 ) : (
                   <td className='w-60 text-end text-red-500'>
                     {decimalFormatter(
-                      +(exchange.data[0].close - exchange.data[0].open).toFixed(
-                        2
-                      )
+                      +(exchange.data[0].close - exchange.data[0].open)
                     )}{' '}
                     {(
                       (+(exchange.data[0].close - exchange.data[0].open) *
