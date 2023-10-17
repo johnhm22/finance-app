@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+
 import TickerSelect from './TickerSelect';
 import { AddShareForm, TickerData } from '@/types';
 import debounce from 'debounce-promise';
 import { findTicker } from '../utils/ticker.search.helper';
 import { getQuickQuotes } from '../utils/getQuickQuote';
+import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 
 const QuickQuote = () => {
   const [openTickerListDropDown, setOpenTickerListDropDown] =
@@ -16,6 +18,14 @@ const QuickQuote = () => {
   const [tickerSearchText, setTickerSearchText] = useState<{ ticker: string }>({
     ticker: '',
   });
+
+  const getQuoteComponentRef = useRef(null);
+
+  const handleCloseTickerList = () => {
+    setOpenTickerListDropDown(false);
+  };
+
+  CloseOnOutsideClick(getQuoteComponentRef, handleCloseTickerList);
 
   const initialState = {
     country: '',
@@ -59,9 +69,7 @@ const QuickQuote = () => {
     //  e.preventDefault();
     setTickerData(ticker);
     saveSelectedTickerInForm(ticker);
-    //call quote function and populate state with price
     populatePrice(ticker.symbol);
-
     setOpenTickerListDropDown(false);
   };
 
@@ -92,8 +100,8 @@ const QuickQuote = () => {
       debounce(async (tickerSearchText: { ticker: string }) => {
         const response = await tickerSearch(tickerSearchText.ticker);
         if (response!.data) {
-          setOpenTickerListDropDown(true);
           setTickerList(response!.data);
+          setOpenTickerListDropDown(true);
         }
       }, 300),
     []
@@ -108,7 +116,7 @@ const QuickQuote = () => {
               Get a quick quote
             </h2>
           </div>
-          <div className='self-center'>
+          <div ref={getQuoteComponentRef} className='self-center'>
             <label
               htmlFor='ticker'
               className='flex mt-5 text-xs capitalize mb-1 font-source'
@@ -142,7 +150,7 @@ const QuickQuote = () => {
           id='price'
           name='price'
           type='text'
-          value={price}
+          value={`${price} p`}
         />
       </div>
       <div>
