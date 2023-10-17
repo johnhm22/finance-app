@@ -58,7 +58,6 @@ const AddShare = ({
   const [tickerData, setTickerData] = useState<TickerData>(initialState);
 
   const saveSelectedTickerInForm = (ticker: TickerData) => {
-    console.log('ticker in saveSelectedTickerInForm', ticker);
     setAddShareForm((prevState) => ({
       ...prevState,
       ticker,
