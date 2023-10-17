@@ -135,11 +135,10 @@ const AddShare = ({
             <TickerSelect
               tickerList={tickerList}
               openTickerListDropDown={openTickerListDropDown}
-              placeholder='Enter name or ticker symbol'
+              placeholder='Enter name or share symbol'
               handleTickerSearchText={handleTickerSearchText}
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
-              addShareForm={addShareForm}
               tickerData={tickerData}
               tickerSearchText={tickerSearchText}
             />
