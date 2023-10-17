@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { AddShareForm, TickerData } from '@/types';
+import { TickerData } from '@/types';
 
 interface IProps {
   tickerList: TickerData[];
@@ -11,7 +11,6 @@ interface IProps {
   onTickerSelect: (ticker: TickerData) => void;
   setOpenTickerListDropDown: React.Dispatch<React.SetStateAction<boolean>>;
   value?: string;
-  addShareForm: AddShareForm | undefined;
   tickerData: TickerData | undefined;
   handleTickerSearchText: (e: React.ChangeEvent<HTMLInputElement>) => void;
   tickerSearchText: { ticker: string };
