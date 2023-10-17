@@ -29,8 +29,6 @@ const TickerSelect: React.FC<IProps> = ({
     onTickerSelect(ticker);
   };
 
-  console.log('tickerData in TickerSelect: ', tickerData);
-
   return (
     <div>
       <div>
