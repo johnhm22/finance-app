@@ -38,6 +38,25 @@ const AddShare = ({
 
   CloseOnOutsideClick(addShareComponentRef, handleCloseAddShare);
 
+  const initialState = {
+    country: '',
+    has_eod: false,
+    has_intraday: false,
+    name: '',
+    symbol: '',
+    stock_exchange: {
+      acronym: '',
+      city: '',
+      country: '',
+      country_code: '',
+      mic: '',
+      name: '',
+      website: '',
+    },
+  };
+
+  const [tickerData, setTickerData] = useState<TickerData>(initialState);
+
   const saveSelectedTickerInForm = (ticker: TickerData) => {
     setAddShareForm((prevState) => ({
       ...prevState,
@@ -62,6 +81,7 @@ const AddShare = ({
 
   const handleTickerSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+    console.log('name and value from handleTickerSearchText: ', name, value);
     setTickerSearchText((prevState) => ({
       ...prevState,
       [name]: value,
@@ -82,6 +102,7 @@ const AddShare = ({
   );
 
   const onTickerSelect = (ticker: TickerData) => {
+    setTickerData(ticker);
     saveSelectedTickerInForm(ticker);
     setOpenTickerListDropDown(false);
   };
@@ -114,11 +135,11 @@ const AddShare = ({
             <TickerSelect
               tickerList={tickerList}
               openTickerListDropDown={openTickerListDropDown}
-              placeholder='Enter name or ticker symbol'
+              placeholder='Enter name or share symbol'
               handleTickerSearchText={handleTickerSearchText}
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
-              addShareForm={addShareForm}
+              tickerData={tickerData}
               tickerSearchText={tickerSearchText}
             />
           </div>
