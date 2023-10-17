@@ -3,11 +3,12 @@
 import React, { useMemo, useRef, useState } from 'react';
 
 import TickerSelect from './TickerSelect';
-import { AddShareForm, TickerData } from '@/types';
+import { TickerData } from '@/types';
 import debounce from 'debounce-promise';
 import { findTicker } from '../utils/ticker.search.helper';
 import { getQuickQuotes } from '../utils/getQuickQuote';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
+import Link from 'next/link';
 
 const QuickQuote = () => {
   const [openTickerListDropDown, setOpenTickerListDropDown] =
@@ -44,21 +45,9 @@ const QuickQuote = () => {
     },
   };
 
-  const addShareFormInitialState = {
-    bookCost: 0,
-    quantity: 0,
-    ticker: initialState,
-  };
-
-  const [addShareForm, setAddShareForm] = useState<AddShareForm>();
-
   const [tickerData, setTickerData] = useState<TickerData>(initialState);
 
-  const [price, setPrice] = useState<number | undefined>();
-
-  const saveSelectedTickerInForm = (ticker: TickerData) => {
-    setAddShareForm(addShareFormInitialState);
-  };
+  const [price, setPrice] = useState<number | string>('');
 
   const populatePrice = async (ticker: string) => {
     const closePrice = await getQuickQuotes(ticker);
@@ -68,16 +57,13 @@ const QuickQuote = () => {
   const onTickerSelect = (ticker: TickerData) => {
     //  e.preventDefault();
     setTickerData(ticker);
-    saveSelectedTickerInForm(ticker);
     populatePrice(ticker.symbol);
     setOpenTickerListDropDown(false);
   };
 
   const handleOnClear = () => {
-    // onSubmit(addShareForm!, payloadData.id);
     setTickerData(initialState);
-    setAddShareForm(addShareFormInitialState);
-    setPrice(undefined);
+    setPrice('');
     setTickerSearchText({ ticker: '' });
   };
 
@@ -126,41 +112,34 @@ const QuickQuote = () => {
             <TickerSelect
               tickerList={tickerList}
               openTickerListDropDown={openTickerListDropDown}
-              placeholder='Enter name or ticker symbol'
+              placeholder='Enter name or share symbol'
               handleTickerSearchText={handleTickerSearchText}
               onTickerSelect={onTickerSelect}
               setOpenTickerListDropDown={setOpenTickerListDropDown}
-              addShareForm={addShareForm}
               tickerData={tickerData}
               tickerSearchText={tickerSearchText}
             />
           </div>
+          <div className='flex flex-col mt-8 gap-2'>
+            <p className='text-xs'>Price: </p>
+            <div className='flex h-8 justify-center py-1 bg-white border shadow-sm border-slate-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-20 rounded-md sm:text-sm focus:ring-1'>
+              <span>{price ? price : ''}</span>
+            </div>
+          </div>
+        </div>
+        <div className='flex flex-row  justify-between mt-8 md:mt-14'>
+          <button className='flex bg-green-500  justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-green-600 text-base  md:text-xl text-white'>
+            <Link href='/'>Go back</Link>
+          </button>
+
+          <button
+            onClick={handleOnClear}
+            className='flex bg-blue-700  justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-blue-800 text-base  md:text-xl text-white'
+          >
+            Reset
+          </button>
         </div>
       </form>
-      <div className={`items-center self-start`}></div>
-      <div className='self-center'>
-        <label
-          htmlFor='price'
-          className='flex mt-5 text-xs capitalize mb-1 font-source'
-        >
-          Price
-        </label>
-        <input
-          className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1'
-          id='price'
-          name='price'
-          type='text'
-          value={`${price} p`}
-        />
-      </div>
-      <div>
-        <button
-          onClick={handleOnClear}
-          className='flex bg-blue-700  mt-8 md:mt-14 justify-center items-center rounded-full h-3 md:h-12 w-full p-5 hover:bg-blue-800 text-base  md:text-xl text-white'
-        >
-          Reset
-        </button>
-      </div>
     </div>
   );
 };
