@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 
-import { ILoginForm } from '@/types';
+import { ILoginForm, LoginErrors } from '@/types';
 import Input from './Input';
-import Button from './Button';
 import ButtonLarge from './ButtonLarge';
+import { validateLogin } from '../validations/validation-functions/auth.validations';
 
 interface IProps {
   // handleCloseEdit: () => void;
@@ -12,11 +12,12 @@ interface IProps {
 }
 
 const Login = ({ onLogin }: IProps) => {
-  
   const [loginForm, setLoginForm] = useState<ILoginForm>({
     username: '',
     password: '',
   });
+
+  const [errors, setErrors] = useState<LoginErrors | null>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -24,26 +25,30 @@ const Login = ({ onLogin }: IProps) => {
       ...prevState,
       [name]: value,
     }));
+    setErrors((prevState) => ({
+      ...prevState,
+      [name]: '',
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onLogin(loginForm);
-    setLoginForm({
-      username: '',
-      password: '',
-    });
+    const { errors, isValid } = validateLogin(loginForm);
+    if (isValid) {
+      onLogin(loginForm);
+      setLoginForm({
+        username: '',
+        password: '',
+      });
+    } else {
+      setErrors({ ...errors });
+    }
   };
 
   return (
     <>
       <div className='flex flex-col bg-white md:w-2/3 lg:w-1/2 w-full'>
-        <form
-          // data-modal-form={`modal-form${modalTitle && '-'}${modalTitle
-          //   .replace(/ +/g, '-')
-          //   .toLowerCase()}`}
-          onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
           <div className='px-5 pt-28'>
             <div className='flex justify-center items-center'>
               <p className='font-extrabold text-orange-500 text-3xl'>a</p>
@@ -57,6 +62,7 @@ const Login = ({ onLogin }: IProps) => {
                 type='text'
                 placeholder='username'
                 onChange={handleChange}
+                errors={errors?.username}
               />
             </div>
             <div className='self-center'>
@@ -66,6 +72,7 @@ const Login = ({ onLogin }: IProps) => {
                 type='text'
                 placeholder='password'
                 onChange={handleChange}
+                errors={errors?.password}
               />
             </div>
             <ButtonLarge label='Log in' />
