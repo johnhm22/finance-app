@@ -17,7 +17,6 @@ const Input = ({
   errors,
   onChange,
 }: IProps) => {
-  // console.log('errors passed to Input: ', errors);
   return (
     <>
       <label className='flex mt-5 text-sm capitalize mb-1 font-source'>
