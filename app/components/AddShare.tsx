@@ -81,7 +81,6 @@ const AddShare = ({
 
   const handleTickerSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    console.log('name and value from handleTickerSearchText: ', name, value);
     setTickerSearchText((prevState) => ({
       ...prevState,
       [name]: value,
