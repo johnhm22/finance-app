@@ -12,6 +12,18 @@ export type GenericErrorsType<
   [k in K]?: string;
 };
 
+export type LoginErrors = {
+  username?: string;
+  password?: string;
+};
+
+export type RegisterErrors = {
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+};
+
 export type ShareEditForm = {
   bookCost: number;
   quantity: number;
