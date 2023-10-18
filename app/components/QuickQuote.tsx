@@ -55,7 +55,6 @@ const QuickQuote = () => {
   };
 
   const onTickerSelect = (ticker: TickerData) => {
-    //  e.preventDefault();
     setTickerData(ticker);
     populatePrice(ticker.symbol);
     setOpenTickerListDropDown(false);
