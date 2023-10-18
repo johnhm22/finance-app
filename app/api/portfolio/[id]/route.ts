@@ -30,7 +30,7 @@ export async function GET(
       });
 
       const quoteCall = await axios({
-        url: `http://api.marketstack.com/v1/eod/latest?access_key=${
+        url: `https://api.marketstack.com/v1/eod/latest?access_key=${
           process.env.MARKETSTACK_ACCESS_KEY
         }&symbols=${symbolArray.toString()}`,
       });
