@@ -12,7 +12,11 @@ export const middleware = async (
     console.log('there is no accessToken');
     return NextResponse.redirect(`${process.env.BASE_URL}/login`);
   }
-  await verifyToken(accessToken.value);
+  const verifyResult = await verifyToken(accessToken.value);
+
+  if (verifyResult.error) {
+    return NextResponse.redirect(`${process.env.BASE_URL}/login`);
+  }
 };
 
 export const config = {
