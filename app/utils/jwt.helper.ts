@@ -32,7 +32,7 @@ export const verifyToken = async (
   });
 };
 
-export const updateTokenForActiveUser = async (payload: JWTPayload) => {
+const updateTokenForActiveUser = async (payload: JWTPayload) => {
   const validityDuration = differenceInMinutes(
     new Date(payload.exp! * 1000),
     new Date(payload.iat! * 1000)
