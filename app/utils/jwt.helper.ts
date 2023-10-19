@@ -19,12 +19,8 @@ export const verifyToken = async (
 
     return payload;
   } catch (e) {
-    console.log('Error: ', e);
-    if (
-      e instanceof errors.JOSEError &&
-      e.code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED'
-    ) {
-      return NextResponse.redirect(`${process.env.BASE_URL}/login`);
+    if (e instanceof errors.JOSEError) {
+      return { error: e.code };
     }
   }
   return NextResponse.json({
