@@ -17,7 +17,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`flex justify-center items-center rounded-full w-28 md:w-48 mt-5 gap-2 px-2 md:px-5  py-1 md:py-3 hover:cursor-pointer border md:text-base text-sm font-semibold leading-none ${backgroundColour} ${backgroundColour} ${textColour} ${borderColour}`}
+      className={`flex justify-center items-center rounded-full w-28 md:w-48 md:text-base text-sm mt-5 gap-2 px-2 md:px-5 py-1 md:py-3 hover:cursor-pointer border  font-semibold leading-none ${backgroundColour} ${backgroundColour} ${textColour} ${borderColour}`}
       onClick={onClick}
     >
       {label}
