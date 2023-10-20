@@ -271,7 +271,8 @@ const Page = () => {
           </p>
         </div>
       </div>
-      <div className='bg-white drop-shadow-md  w-11/12 md:w-2/3 mt-5 px-2 py-5 overflow-auto'>
+
+      <div className='bg-white drop-shadow-md w-11/12 md:w-2/3 mt-5 px-2 py-5 overflow-auto'>
         <div className='flex flex-col'>
           <div className='flex flex-row'>
             <h2 className={'font-semibold text-base pb-2 mr-2'}>
@@ -283,15 +284,15 @@ const Page = () => {
             <div className='basis-3/4 flex flex-row'></div>
           </div>
         </div>
-        <table className='border-separate w-full '>
+        <table className='border-separate w-full table-fixed '>
           <thead>
             <tr className='bg-indigo-50 font-semibold text-xs'>
-              <th className='p-2 w-40'>Symbol/Name</th>
-              <th className='p-2 w-32'>Quantity</th>
-              <th className='p-2 w-32'>Book Cost</th>
-              <th className='p-2'>Price*</th>
-              <th className=' p-2'>Value</th>
-              <th className='p-2'>Edit/delete</th>
+              <th className='p-2 w-[150px]'>Symbol/Name</th>
+              <th className='p-2 w-[100px]'>Quantity</th>
+              <th className='p-2 w-[100px]'>Book Cost</th>
+              <th className='p-2 w-[100px]'>Price*</th>
+              <th className=' p-2 w-[100px]'>Value</th>
+              <th className='p-2 w-[100px]'>Edit/delete</th>
             </tr>
           </thead>
           <tbody>
@@ -347,7 +348,6 @@ const Page = () => {
           </tbody>
         </table>{' '}
         <div className='self-end flex items-center justify-end mt-3'>
-          {' '}
           <Button
             label='Add New Share'
             backgroundColour='bg-green-400'
