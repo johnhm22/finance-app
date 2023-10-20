@@ -16,8 +16,8 @@ const Landing = async () => {
   const currencyData = await getCurrencyData();
 
   return (
-    <section className='flex flex-1 w-full flex-col h-screen '>
-      <div className='mt-14 md:h-[25rem] h-[35rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
+    <section className='flex flex-1 w-full flex-col h-screen'>
+      <div className='mt-14 md:h-[25rem] sm:h-[38rem] h-[40rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
         <div className='flex flex-col pt-10 pl-10'>
           <h1 className='font-bold text-3xl'>
             Welcome to your personal share app
@@ -38,7 +38,10 @@ const Landing = async () => {
               textColour='text-blue-700'
             />
           </Link>
-          <Link href='./quick-quote' className='font-semibold mt-5 text-2xl'>
+          <Link
+            href='./quick-quote'
+            className='font-semibold mt-5 text-2xl mb-5'
+          >
             Try our <span className='text-orange-500'>free</span> quick quote
           </Link>
         </div>
@@ -51,7 +54,7 @@ const Landing = async () => {
           </div>
         </div>
       </div>
-      <div className=' flex flex-1 md:flex-row flex-col justify-between font-stone-400 h-[20rem]'>
+      <div className=' flex flex-1 md:flex-row flex-col justify-between h-[20rem]'>
         <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
           <tbody>
             {exchangeData?.map((exchange) => (
