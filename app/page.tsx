@@ -13,7 +13,7 @@ enum ExchangeAcronym {
 
 const Landing = async () => {
   const exchangeData = await getExchangeData();
-  // const currencyData = await getCurrencyData();
+  const currencyData = await getCurrencyData();
 
   return (
     <section className='flex flex-1 w-full flex-col h-screen '>
@@ -99,7 +99,7 @@ const Landing = async () => {
             ))}
           </tbody>
         </table>
-        {/* <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
+        <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
           <tbody>
             <tr className='border-b-2 border-gray-300 h-16'>
               <td className='w-36'>
@@ -120,7 +120,7 @@ const Landing = async () => {
               <td className='w-60 text-end'>{currencyData[1].EUR}</td>
             </tr>
           </tbody>
-        </table> */}
+        </table>
       </div>
     </section>
   );
