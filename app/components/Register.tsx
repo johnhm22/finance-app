@@ -51,7 +51,7 @@ const Register = ({ onRegister }: IProps) => {
   };
 
   return (
-    <div className='flex flex-col bg-white w-1/3'>
+    <div className='flex flex-col bg-white w-2/3  sm:w-3/5 md:w-1/3'>
       <form onSubmit={handleSubmit}>
         <div className='p-5 pt-20'>
           <div className='flex justify-center items-center'>
