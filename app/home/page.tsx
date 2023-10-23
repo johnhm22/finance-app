@@ -250,26 +250,23 @@ const Page = () => {
 
   return (
     <main className='flex h-screen flex-col items-center bg-slate-200'>
-      <div className='flex flex-row w-11/12 md:w-2/3 bg-white justify-between px-2 py-5 items-center mt-28 drop-shadow-md'>
-        <p className='font-semibold items-center'>Summary</p>
-        <div className='flex flex-col'>
-          <p className=''>Total Value</p>
-          <p className='font-semibold'>£ {decimalFormatter(totalValue!)}</p>
-        </div>
-
-        <div className='flex flex-col'>
-          {' '}
-          <p className=''>Total Cost</p>
-          <p className='font-semibold'>£ {decimalFormatter(totalCost!)}</p>
-        </div>
-
-        <div>
-          {' '}
-          <p className=''>Profit/Loss</p>
-          <p className='font-semibold'>
-            £ {decimalFormatter(+(totalValue! - totalCost!))}
-          </p>
-        </div>
+      <div className='flex flex-row w-11/12 md:w-2/3 bg-white justify-between px-2 py-5 items-center mt-28 drop-shadow-md overflow-auto'>
+        <table className='border-separate w-full table-fixed'>
+          <thead>
+            <tr className='bg-indigo-50 font-semibold text-xs text'>
+              <th className='p-2 w-[100px]'>Total Value</th>
+              <th className='p-2 w-[100px]'>Total Cost</th>
+              <th className='p-2 w-[100px]'>Profit/Loss</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className='font-semibold text-sm text-center'>
+              <td>£ {decimalFormatter(totalValue!)}</td>
+              <td>£ {decimalFormatter(totalCost!)}</td>
+              <td> £ {decimalFormatter(+(totalValue! - totalCost!))}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div className='bg-white drop-shadow-md w-11/12 md:w-2/3 mt-5 px-2 py-5 overflow-auto'>
