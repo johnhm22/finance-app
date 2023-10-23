@@ -5,6 +5,7 @@ import { ILoginForm, LoginErrors } from '@/types';
 import Input from './Input';
 import ButtonLarge from './ButtonLarge';
 import { validateLogin } from '../validations/validation-functions/auth.validations';
+import ActiveInvestor from './ActiveInvestor';
 
 interface IProps {
   onLogin: (formData: ILoginForm) => Promise<void>;
@@ -51,15 +52,7 @@ const Login = ({ onLogin }: IProps) => {
         className='flex flex-col mt-16 pb-5 bg-white w-4/5 md:w-1/2 lg:w-1/3 h:1/2 lg:h-3/4'
       >
         <div className='px-5 pt-16'>
-          <div className='flex justify-center items-center'>
-            <p className='font-extrabold text-orange-500 text-lg  sm:text-3xl'>
-              a
-            </p>
-            <p className='font-extrabold text-orange-500 text-3xl md:text-5xl mr-2'>
-              i
-            </p>
-            <h2 className=' text-sm md:text-xl font-bold'>activeInvestor</h2>
-          </div>
+          <ActiveInvestor />
           <div className='self-center'>
             <Input
               label='Username'
