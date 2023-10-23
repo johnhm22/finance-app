@@ -9,6 +9,7 @@ import { findTicker } from '../utils/ticker.search.helper';
 import { getQuickQuotes } from '../utils/getQuickQuote';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 import Link from 'next/link';
+import ActiveInvestor from './ActiveInvestor';
 
 const QuickQuote = () => {
   const [openTickerListDropDown, setOpenTickerListDropDown] =
@@ -93,53 +94,52 @@ const QuickQuote = () => {
   );
 
   return (
-    <div className='flex flex-col absolute bg-white border shadow-md mt-20 w-3/5 md:w-1/3 h-4/5 md:h-2/3 px-5 pt-12'>
-      <form>
-        <div className='p-5 '>
-          <div className='items-center self-start'>
-            <h2 className='inline-block text-sm md:text-xl text-nitro-space font-source font-bold'>
-              Get a quick quote
-            </h2>
-          </div>
-          <div ref={getQuoteComponentRef} className='self-center'>
-            <label
-              htmlFor='ticker'
-              className='flex mt-5 text-xs capitalize mb-1 font-source'
-            >
-              Enter stock
-            </label>
-            <TickerSelect
-              tickerList={tickerList}
-              openTickerListDropDown={openTickerListDropDown}
-              placeholder='Enter name or share symbol'
-              handleTickerSearchText={handleTickerSearchText}
-              onTickerSelect={onTickerSelect}
-              setOpenTickerListDropDown={setOpenTickerListDropDown}
-              tickerData={tickerData}
-              tickerSearchText={tickerSearchText}
-            />
-          </div>
-          <div className='flex flex-col mt-8 gap-2'>
-            <p className='text-xs'>Price: </p>
-            <div className='flex h-8 justify-center py-1 bg-white border shadow-sm border-slate-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-20 rounded-md sm:text-sm focus:ring-1'>
-              <span>{price ? price : ''}</span>
-            </div>
-          </div>
+    <form className='flex flex-col absolute h-3/5 md:h-1/2 mt-16 pb-5 bg-white border shadow-md w-4/5 md:w-1/2 lg:w-1/3'>
+      <div className='px-5 pt-8'>
+        <ActiveInvestor />
+        <div className='items-center self-start'>
+          <h2 className='inline-block text-sm md:text-xl font-source font-bold'>
+            Get a quick quote
+          </h2>
         </div>
-        <div className='flex flex-row  justify-between mt-8 md:mt-14'>
-          <button className='flex bg-green-500  justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-green-600 text-base  md:text-xl text-white'>
-            <Link href='/'>Go back</Link>
-          </button>
-
-          <button
-            onClick={handleOnClear}
-            className='flex bg-blue-700  justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-blue-800 text-base  md:text-xl text-white'
+        <div ref={getQuoteComponentRef} className='self-center'>
+          <label
+            htmlFor='ticker'
+            className='flex mt-5 text-xs capitalize mb-1 font-source'
           >
-            Reset
-          </button>
+            Enter stock
+          </label>
+          <TickerSelect
+            tickerList={tickerList}
+            openTickerListDropDown={openTickerListDropDown}
+            placeholder='Enter name or symbol'
+            handleTickerSearchText={handleTickerSearchText}
+            onTickerSelect={onTickerSelect}
+            setOpenTickerListDropDown={setOpenTickerListDropDown}
+            tickerData={tickerData}
+            tickerSearchText={tickerSearchText}
+          />
         </div>
-      </form>
-    </div>
+        <div className='flex flex-col mt-8 gap-2'>
+          <p className='text-xs'>Price: </p>
+          <div className='flex h-8 justify-center py-1 bg-white border shadow-sm border-slate-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-20 rounded-md sm:text-sm focus:ring-1'>
+            <span>{price ? price : ''}</span>
+          </div>
+        </div>
+      </div>
+      <div className='flex flex-row  justify-between mt-8'>
+        <button className='flex bg-green-500 ml-2 justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-green-600 text-sm md:text-xl text-white'>
+          <Link href='/'>Go back</Link>
+        </button>
+
+        <button
+          onClick={handleOnClear}
+          className='flex bg-blue-700 mr-2 justify-center items-center rounded-full h-3 md:h-12 w-2/5 p-5 hover:bg-blue-800 text-sm md:text-xl text-white'
+        >
+          Reset
+        </button>
+      </div>
+    </form>
   );
 };
 
