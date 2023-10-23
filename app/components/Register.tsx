@@ -90,7 +90,7 @@ const Register = ({ onRegister }: IProps) => {
                 errors={errors?.lastName}
               />
             </div>
-            <div className='self-center'>
+            <div className='self-center mb-10'>
               <Input
                 label='Password'
                 name='password'
