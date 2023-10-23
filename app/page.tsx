@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import Button from './components/Button';
 import { getExchangeData } from './utils/getExchangeData.helper';
 import { decimalFormatter } from './utils/numberFormat.helper';
 import { getCurrencyData } from './utils/getCurrencyData.helper';
@@ -16,7 +15,7 @@ const Landing = async () => {
   const currencyData = await getCurrencyData();
 
   return (
-    <section className='flex flex-1 w-full flex-col h-screen'>
+    <section className='flex flex-1 w-full flex-col'>
       <div className='mt-14 md:h-[25rem] h-[40rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
         <div className='flex flex-col pt-10 pl-10'>
           <h1 className='font-bold text-3xl'>
@@ -27,23 +26,26 @@ const Landing = async () => {
             create your portfolio
           </div>
           <br />
-          <Link href='./login' className='font-semibold mb-2'>
-            Please <span className='text-orange-500'>login</span> to see your
-            details
-          </Link>
-          <Link href={'/register'}>
-            <Button
-              label='Open an account'
-              backgroundColour='bg-white'
-              textColour='text-blue-700'
-            />
-          </Link>
+          <p className='font-semibold mb-2'>
+            Please {''}
+            <Link href='./login'>
+              <span className='text-orange-500'>login</span>
+            </Link>
+            {''} to see your details
+          </p>
           <Link
-            href='./quick-quote'
-            className='font-semibold mt-5 text-2xl mb-5'
+            href='/register'
+            className='flex justify-center mt-2 md:mt-5 hover:cursor-pointer bg-white text-blue-700 py-3 md:py-3 px-2 md:px-4 font-semibold text-sm md:text-base w-32 md:w-44 items-center  rounded-full'
           >
-            Try our <span className='text-orange-500'>free</span> quick quote
+            Open an account
           </Link>
+          <p className='font-semibold mt-5 text-2xl mb-5'>
+            Try our {''}
+            <Link href='./quick-quote'>
+              <span className='text-orange-500'>free</span>
+            </Link>
+            {''} quick quote
+          </p>
         </div>
         <div className='pl-10'>
           <div className='rounded-full relative max-sm:bottom-10 max-sm:left-6 pt-6 bg-orange-500 text-white w-20 md:w-28 h-20 md:h-28 font-semibold text-sm  md:text-lg items-center text-center mr-64 mt-10'>
@@ -54,7 +56,7 @@ const Landing = async () => {
           </div>
         </div>
       </div>
-      <div className=' flex flex-1 md:flex-row flex-col justify-between h-[20rem]'>
+      <div className='flex flex-1 md:flex-row flex-col justify-between h-[30rem]'>
         <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
           <tbody>
             {exchangeData?.map((exchange) => (
@@ -102,7 +104,7 @@ const Landing = async () => {
             ))}
           </tbody>
         </table>
-        <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
+        <table className='table-auto h-1/2 ml-10 mt-5 mb-5 text-xl mr-10'>
           <tbody>
             <tr className='border-b-2 border-gray-300 h-16'>
               <td className='w-36'>
