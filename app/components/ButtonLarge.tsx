@@ -8,7 +8,7 @@ const ButtonLarge = ({ label, iconURL, onClick }: ButtonProps) => {
   return (
     <button
       className={
-        'flex bg-blue-700 justify-center items-center rounded-full h-6 md:h-12 w-full p-5 hover:bg-blue-800 text-base md:text-xl text-white'
+        'flex bg-blue-700 justify-center items-center rounded-full h-6 md:h-12 w-full p-5 hover:bg-blue-800 text-sm md:text-xl text-white'
       }
       onClick={onClick}
     >
