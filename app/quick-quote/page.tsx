@@ -2,7 +2,7 @@ import QuickQuote from '@/app/components/QuickQuote';
 
 const Page = () => {
   return (
-    <div className='flex max-container h-screen bg-slate-100 items-center justify-center'>
+    <div className='flex flex-1 h-screen items-center justify-center bg-slate-100'>
       <QuickQuote />
     </div>
   );
