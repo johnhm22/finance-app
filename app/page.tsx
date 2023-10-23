@@ -46,10 +46,10 @@ const Landing = async () => {
           </Link>
         </div>
         <div className='pl-10'>
-          <div className='rounded-full pt-6 bg-orange-500 text-white w-28 h-28 font-semibold text-lg items-center text-center mr-64 mt-10'>
+          <div className='rounded-full relative max-sm:bottom-10 max-sm:left-6 pt-6 bg-orange-500 text-white w-20 md:w-28 h-20 md:h-28 font-semibold text-sm  md:text-lg items-center text-center mr-64 mt-10'>
             Track your Portfolio
           </div>
-          <div className='relative pt-16 bottom-28 left-24 rounded-full bg-blue-950 text-white w-48 h-48 font-semibold text-2xl items-center text-center'>
+          <div className='relative pt-8 md:pt-14 bottom-28 left-24 md:bottom-28 md:left-24 rounded-full bg-blue-950 text-white w-28 md:w-48 h-28 md:h-48 font-semibold text-lg md:text-2xl items-center text-center'>
             Add your <br /> stocks
           </div>
         </div>
