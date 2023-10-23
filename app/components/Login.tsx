@@ -7,7 +7,6 @@ import ButtonLarge from './ButtonLarge';
 import { validateLogin } from '../validations/validation-functions/auth.validations';
 
 interface IProps {
-  // handleCloseEdit: () => void;
   onLogin: (formData: ILoginForm) => Promise<void>;
 }
 
@@ -47,38 +46,43 @@ const Login = ({ onLogin }: IProps) => {
 
   return (
     <>
-      <div className='flex flex-col bg-white md:w-2/3 lg:w-1/2 w-full'>
-        <form onSubmit={handleSubmit}>
-          <div className='px-5 pt-28'>
-            <div className='flex justify-center items-center'>
-              <p className='font-extrabold text-orange-500 text-3xl'>a</p>
-              <p className='font-extrabold text-orange-500 text-5xl mr-2'>i</p>
-              <h2 className='text-2xl font-bold'>activeInvestor</h2>
-            </div>
-            <div className='self-center'>
-              <Input
-                label='Username'
-                name='username'
-                type='text'
-                placeholder='username'
-                onChange={handleChange}
-                errors={errors?.username}
-              />
-            </div>
-            <div className='self-center'>
-              <Input
-                label='Password'
-                name='password'
-                type='text'
-                placeholder='password'
-                onChange={handleChange}
-                errors={errors?.password}
-              />
-            </div>
-            <ButtonLarge label='Log in' />
+      <form
+        onSubmit={handleSubmit}
+        className='flex flex-col mt-16 pb-5 bg-white w-2/3 md:w-1/2 lg:w-1/3 h:1/2 lg:h-3/4'
+      >
+        <div className='px-5 pt-16'>
+          <div className='flex justify-center items-center'>
+            <p className='font-extrabold text-orange-500 text-lg  sm:text-3xl'>
+              a
+            </p>
+            <p className='font-extrabold text-orange-500 text-3xl md:text-5xl mr-2'>
+              i
+            </p>
+            <h2 className=' text-sm md:text-xl font-bold'>activeInvestor</h2>
           </div>
-        </form>
-      </div>
+          <div className='self-center'>
+            <Input
+              label='Username'
+              name='username'
+              type='text'
+              placeholder='username'
+              onChange={handleChange}
+              errors={errors?.username}
+            />
+          </div>
+          <div className='self-center mb-10'>
+            <Input
+              label='Password'
+              name='password'
+              type='text'
+              placeholder='password'
+              onChange={handleChange}
+              errors={errors?.password}
+            />
+          </div>
+          <ButtonLarge label='Log in' />
+        </div>
+      </form>
     </>
   );
 };
