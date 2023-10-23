@@ -3,21 +3,14 @@
 import Link from 'next/link';
 
 import { useGlobalContext } from './UserContext';
+import ActiveInvestor from './ActiveInvestor';
 
 const Navbar = () => {
   const { payloadData } = useGlobalContext();
   return (
     <header className='w-full z-10 bg-slate-100 fixed'>
       <nav className='max-w-[1440px] mx-2 md:mx-4 flex justify-between items-center md:px-5 sm:px-16 h-14'>
-        <div className='flex justify-center items-center'>
-          <p className='font-extrabold text-orange-500 text-lg  sm:text-3xl'>
-            a
-          </p>
-          <p className='font-extrabold text-orange-500 text-3xl md:text-5xl mr-2'>
-            i
-          </p>
-          <p className='font-bold text-sm sm:text-lg'>activeInvestor</p>
-        </div>
+        <ActiveInvestor />
         <div className='flex flex-row justify-end gap-3 font-semibold text-base'>
           {!payloadData?.id ? (
             <>
