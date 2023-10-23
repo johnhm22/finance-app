@@ -17,7 +17,7 @@ const Landing = async () => {
 
   return (
     <section className='flex flex-1 w-full flex-col h-screen'>
-      <div className='mt-14 md:h-[25rem] sm:h-[38rem] h-[40rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
+      <div className='mt-14 md:h-[25rem] h-[40rem] bg-blue-800 text-white flex flex-row max-md:flex-col justify-between'>
         <div className='flex flex-col pt-10 pl-10'>
           <h1 className='font-bold text-3xl'>
             Welcome to your personal share app
