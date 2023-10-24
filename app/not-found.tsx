@@ -5,7 +5,8 @@ export default function NotFound() {
   return (
     <>
       <main className='flex h-screen flex-col items-center bg-slate-200'>
-        <div className='flex flex-col pt-16 px-5 mt-20 bg-white w-2/3 sm:w-1/2 md:w-1/3 h-2/3 md:h-3/4 items-center drop-shadow-md'>
+        <div className='flex flex-col mt-16 justify-center pt-16 px-5 bg-white w-4/5 md:w-1/2 lg:w-1/3 h-5/6 lg:h-3/4 items-center drop-shadow-md'>
+          {/* <div className='mt-16   justify-center'> */}
           <ActiveInvestor />
           <h2 className='sm:text-xl text-lg mt-10 text-center'>
             Sorry, we couldn&apos;t find that page.
