@@ -72,7 +72,9 @@ As mentioned above, I was disappointed not to be able to use elephantsql, but a 
 Deploying to Vercel, a seamless process I had understood, was frustrating. Vercel offers their Edge Network which "enables you to store content and run compute in regions close to your customers or your data, reducing latency and improving end-user performance". However, with Edge, you cannot use Node.js apis in Edge functions.  
 
 I only found this out when confronted with errors during the build process. This meant re-writing some of the code.  
-The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.
+The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.  
+
+There is a bug in the FTSE data. The figure being displayed is outdated and not the end-of-day closing figure. I have raised this with the api provider, marketstack, who accept there is an issue and are investigating.
 
 ## Where next?
 I'd like to find a workaround to the currency issue of displaying shares from exchanges in different countries. Then expand to the portfolio to include other investments such as gilts, bonds and trusts. Presenting further data (historical, financial results, broker predictions) for each investment also sounds fun  
@@ -80,5 +82,5 @@ I'd like to find a workaround to the currency issue of displaying shares from ex
 Of course, I also need to add a full suite of tests.
 
 ## Credits
-The "look and feel" design was inpsired by [Intereactive Investor](https://www.ii.co.uk/)
+The "look and feel" design was inpsired by [Interactive Investor](https://www.ii.co.uk/)
 
