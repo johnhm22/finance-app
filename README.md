@@ -74,7 +74,7 @@ Deploying to Vercel, a seamless process I had understood, was frustrating. Verce
 I only found this out when confronted with errors during the build process. This meant re-writing some of the code.  
 The two main victims of this were the debounce function from lodash and the jsonwebtoken package which had a dependency on lodash. To overcome these problems I ended up using the packages 'debounce-promise' and 'jose' respectively.  
 
-There is a bug in the FTSE data. The figure being displayed is outdated and not the end-of-day closing figure. I have raised this with the api provider, marketstack, who accept there is an issue and are investigating.
+**There is a bug in the FTSE data. The figure being displayed is outdated and not the end-of-day closing figure. I have raised this with the api provider, marketstack, who accept there is an issue and are investigating.**
 
 ## Where next?
 I'd like to find a workaround to the currency issue of displaying shares from exchanges in different countries. Then expand to the portfolio to include other investments such as gilts, bonds and trusts. Presenting further data (historical, financial results, broker predictions) for each investment also sounds fun  
