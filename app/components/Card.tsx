@@ -1,29 +1,15 @@
-import Link from 'next/link';
-import React from 'react';
+import React, { JSXElementConstructor } from 'react';
+import ActiveInvestor from './ActiveInvestor';
 
-const Card = () => {
+interface IProps {
+  children: JSX.Element;
+}
+
+const Card = ({ children }: IProps) => {
   return (
-    <div className='flex flex-col bg-white md:w-2/3 lg:w-1/2 w-full drop-shadow-md'>
-      <div className='px-5 pt-28 h-full'>
-        <div className='flex justify-center items-center'>
-          <p className='font-extrabold text-orange-500 text-3xl'>a</p>
-          <p className='font-extrabold text-orange-500 text-5xl mr-2'>i</p>
-          <h2 className='text-2xl font-bold'>activeInvestor</h2>
-        </div>
-        <div className='flex flex-col mt-10 bg-white justify-center items-center'>
-          <div className='flex justify-center text-xl font-semibold'>
-            Thanks for visiting, goodbye!
-          </div>
-          <div className='flex flex-col w-2/3 items-center mt-20'>
-            <button
-              type='submit'
-              className='flex bg-blue-700 justify-center items-center rounded-full h-12 w-full p-5 hover:bg-blue-800 text-xl text-white'
-            >
-              <Link href='/'>Back to welcome page</Link>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className='flex flex-col bg-white mt-16 w-4/5 md:w-1/2 lg:w-1/3 h-5/6 lg:h-3/4 drop-shadow-md items-center justify-center'>
+      <ActiveInvestor />
+      {children}
     </div>
   );
 };
