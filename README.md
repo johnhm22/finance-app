@@ -76,6 +76,8 @@ The two main victims of this were the debounce function from lodash and the json
 
 **There is a bug in the FTSE data. The figure being displayed is outdated and not the end-of-day closing figure. I have raised this with the api provider, marketstack, who accept there is an issue and are investigating.**
 
+**And another bug from marketstack; the share price data for London stocks which is supposed to be end-of-day is currently over a week old. This, too, has been raised with them.**
+
 ## Where next?
 I'd like to find a workaround to the currency issue of displaying shares from exchanges in different countries. Then expand to the portfolio to include other investments such as gilts, bonds and trusts. Presenting further data (historical, financial results, broker predictions) for each investment also sounds fun  
 
