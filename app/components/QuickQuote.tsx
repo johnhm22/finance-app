@@ -9,7 +9,6 @@ import { findTicker } from '../utils/ticker.search.helper';
 import { getQuickQuotes } from '../utils/getQuickQuote';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 import Link from 'next/link';
-import ActiveInvestor from './ActiveInvestor';
 import Card from './Card';
 
 const QuickQuote = () => {
