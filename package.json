@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -38,9 +40,15 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.4",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
     "@types/bcrypt": "^5.0.0",
     "@types/debounce-promise": "^3.1.7",
     "@types/uuid": "^9.0.4",
-    "prisma": "^5.1.0"
+    "@vitest/coverage-v8": "^0.34.6",
+    "jsdom": "^22.1.0",
+    "prisma": "^5.1.0",
+    "vitest": "^0.34.6"
   }
 }
