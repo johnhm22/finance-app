@@ -5,12 +5,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import TickerSelect from './TickerSelect';
 import { TickerData } from '@/types';
 import debounce from 'debounce-promise';
-import { findTicker } from '../utils/ticker.search.helper';
 import { getQuickQuotes } from '../utils/getQuickQuote';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
 import Link from 'next/link';
-import ActiveInvestor from './ActiveInvestor';
 import Card from './Card';
+import { findTickerQuickQuote } from '../utils/ticker.search.quick-quote.helper';
 
 const QuickQuote = () => {
   const [openTickerListDropDown, setOpenTickerListDropDown] =
@@ -69,7 +68,7 @@ const QuickQuote = () => {
   };
 
   const tickerSearch = async (data: string) => {
-    const response = await findTicker(data);
+    const response = await findTickerQuickQuote(data);
     return response;
   };
 
