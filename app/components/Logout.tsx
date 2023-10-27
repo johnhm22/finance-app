@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { deleteCookies } from '../utils/deleteCookies';
 import { useGlobalContext } from './UserContext';
-import ActiveInvestor from './ActiveInvestor';
 import Card from './Card';
 
 const Logout = () => {
