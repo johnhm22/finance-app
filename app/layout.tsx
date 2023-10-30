@@ -23,6 +23,8 @@ export const metadata: Metadata = {
       },
     ],
   },
+  keywords: 'nextjs, tailwind, prisma, postgresql',
+  publisher: 'Vercel',
 };
 
 export default function RootLayout({
