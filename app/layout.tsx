@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'John Morgan' }],
   openGraph: {
     type: 'website',
-    url: 'https://example.com',
+    url: 'https://finance-app-puce.vercel.app/',
     title: 'My finance app',
     description:
       'Designed primarily as a learning exercise to improve knowledge of Next.js v13 and tailwind.css. The functionality enables a user to look up share prices and create a portfolio.',
