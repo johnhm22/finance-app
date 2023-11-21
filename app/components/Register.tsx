@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { IRegisterForm, RegisterErrors } from '@/types';
 import ButtonLarge from './ButtonLarge';
 import { validateRegister } from '../validations/validation-functions/auth.validations';
 import Input from './Input';
-import ActiveInvestor from './ActiveInvestor';
 import Card from './Card';
 
 interface IProps {
@@ -13,8 +12,6 @@ interface IProps {
 }
 
 const Register = ({ onRegister }: IProps) => {
-  const registerComponentRef = useRef(null);
-
   const [registerForm, setRegisterForm] = useState<IRegisterForm>({
     username: '',
     password: '',

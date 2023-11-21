@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { getUserId } from '@/app/utils/getUserId';
+import { getUserId } from '../utils/getUserId';
 import { Payload } from '@/types';
 
 export type GlobalContent = {

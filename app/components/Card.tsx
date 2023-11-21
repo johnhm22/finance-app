@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor } from 'react';
+import React from 'react';
 import ActiveInvestor from './ActiveInvestor';
 
 interface IProps {
