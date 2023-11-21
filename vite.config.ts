@@ -8,6 +8,6 @@ export default defineConfig({
       provider: 'v8',
     },
     environment: 'jsdom',
-    setupFiles: './setupTest.js',
+    setupFiles: ['./app/setUpTests.ts'],
   },
 });
