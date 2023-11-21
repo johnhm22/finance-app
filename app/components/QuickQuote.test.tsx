@@ -11,18 +11,36 @@ import { describe } from 'node:test';
 // screen.logTestingPlaygroundURL();
 
 describe('QuickQuote test', () => {
+  const user = userEvent.setup();
+
   test('it renders without crashing', () => {
     render(<QuickQuote />);
   });
 
-  test('it displays input for share search', () => {
+  test('it displays input for share search', async () => {
     render(<QuickQuote />);
     const shareInput = screen.getByPlaceholderText(/enter name or symbol/i);
+    user.click(shareInput);
+
+    await user.type(shareInput, 'Barclays');
+    expect(shareInput).toHaveValue('Barclays');
   });
 
-  test.only('it displays price of selected share', async () => {
-    const user = userEvent.setup();
+  test('it calls api and displays list of companies when search text entered', async () => {
+    render(<QuickQuote />);
+    const shareInput = screen.getByPlaceholderText(/enter name or symbol/i);
+    user.click(shareInput);
 
+    await user.type(shareInput, 'Barclays');
+    expect(shareInput).toHaveValue('Barclays');
+
+    const list = await screen.findByRole('list');
+    const { getAllByRole } = within(list);
+    const items = getAllByRole('listitem');
+    expect(items.length).toBe(1);
+  });
+
+  test('it displays price of selected share', async () => {
     render(<QuickQuote />);
 
     const shareInput = screen.getByPlaceholderText(/enter name or symbol/i);
