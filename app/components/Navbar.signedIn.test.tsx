@@ -12,8 +12,6 @@ describe('Navbar when user is signed in', () => {
           payloadData: {
             id: '12345',
             firstName: 'John',
-            lastName: 'Howard',
-            username: 'john',
           },
         };
       },

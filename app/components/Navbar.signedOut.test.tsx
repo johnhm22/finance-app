@@ -10,13 +10,8 @@ describe('Navbar tests when user is signed out', () => {
       useGlobalContext: () => {
         return {
           payloadData: {
-            exp: 0,
             firstName: '',
-            iat: 0,
             id: '',
-            lastName: '',
-            role: '',
-            username: '',
           },
         };
       },
