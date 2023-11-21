@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
 
@@ -37,5 +37,6 @@ describe('QuickQuote test', () => {
     expect(items.length).toBe(1);
     user.click(items[0]);
     await screen.findByText(200);
+    expect(shareInput).toHaveValue('BARC.XLON');
   });
 });
