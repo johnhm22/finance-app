@@ -17,7 +17,7 @@ describe('testing logout', () => {
     };
   });
 
-  test('it renders without crashing', async () => {
+  test('it renders without crashing', () => {
     render(<Logout />);
   });
 
