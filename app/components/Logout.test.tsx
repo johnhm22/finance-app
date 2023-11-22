@@ -1,23 +1,32 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { expect, test } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { expect, test, vi, describe } from 'vitest';
 
 import Logout from './Logout';
-import { describe } from 'node:test';
-import { UserIdProvider } from './UserContext';
 
 describe('testing logout', () => {
-  render(
-    <UserIdProvider>
-      <Logout />
-    </UserIdProvider>
-  );
-
-  test('true is truthy', () => {
-    expect(true).toBe(true);
+  vi.mock('../utils/deleteCookies', () => {
+    return { deleteCookies: () => {} };
   });
 
-  test('it renders without crashing', () => {
+  vi.mock('./UserContext', () => {
+    return {
+      useGlobalContext: () => {
+        return { setPayloadData: () => {} };
+      },
+    };
+  });
+
+  test('it renders without crashing', async () => {
     render(<Logout />);
+  });
+
+  test('it contains exepected text and link to welcome page', async () => {
+    render(<Logout />);
+    const link = await screen.findByRole('link');
+    screen.debug();
+    screen.getByText(/thanks for visiting, goodbye!/i);
+    expect(link).toHaveTextContent(/back to welcome page/i);
+    expect(link).toHaveAttribute('href', '/');
   });
 });
