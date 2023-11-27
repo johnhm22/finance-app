@@ -8,13 +8,13 @@ import { AddShareForm, TickerData, TickerResponse } from '@/types';
 import TickerSelect from './TickerSelect';
 import { useGlobalContext } from './UserContext';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
+import { findTicker } from '../utils/ticker.search.helper';
 
 interface IProps {
   handleCloseAddShare: () => void;
   onSubmit: (arg: AddShareForm, userId: string) => void;
   setAddShareForm: React.Dispatch<React.SetStateAction<AddShareForm>>;
   addShareForm: AddShareForm | undefined;
-  tickerSearch: (arg: string) => Promise<TickerResponse | undefined>;
 }
 
 const AddShare = ({
@@ -22,7 +22,6 @@ const AddShare = ({
   onSubmit,
   setAddShareForm,
   addShareForm,
-  tickerSearch,
 }: IProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -78,6 +77,11 @@ const AddShare = ({
   //     debounce.cancel;
   //   };
   // }, []);
+
+  const tickerSearch = async (data: string) => {
+    const response = await findTicker(data);
+    return response;
+  };
 
   const handleTickerSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
