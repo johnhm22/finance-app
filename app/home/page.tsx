@@ -7,7 +7,7 @@ import { AddShareForm, IShareDataToEdit } from '@/types';
 
 import Edit from '../components/EditShare';
 import AddShare from '../components/AddShare';
-import { findTicker } from '@/app/utils/ticker.search.helper';
+import { findTicker } from '../utils/ticker.search.helper';
 import { useGlobalContext } from '../components/UserContext';
 import Button from '../components/Button';
 import { decimalFormatter } from '../utils/numberFormat.helper';
@@ -91,11 +91,6 @@ const Page = () => {
     },
     0
   );
-
-  const tickerSearch = async (data: string) => {
-    const response = await findTicker(data);
-    return response;
-  };
 
   const handleCloseEdit = () => {
     setShowEdit(false);
@@ -373,7 +368,6 @@ const Page = () => {
           onSubmit={onConfirmAddShare}
           addShareForm={addShareForm}
           setAddShareForm={setAddShareForm}
-          tickerSearch={tickerSearch}
         />
       ) : null}
     </main>
