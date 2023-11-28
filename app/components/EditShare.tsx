@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-// import Image from 'next/image';
 
 import { IShareDataToEdit } from '@/types';
 import { CloseOnOutsideClick } from '../utils/closeOnOutsideClick';
