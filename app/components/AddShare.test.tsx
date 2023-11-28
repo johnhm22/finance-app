@@ -109,10 +109,9 @@ describe('AddShare tests', () => {
     await waitFor(() => {
       expect(shareInput).toHaveValue('BARC.XLON');
     });
-    screen.debug();
   });
 
-  test.only('it accepts entries for cost and quantity', async () => {
+  test('it accepts entries for cost and quantity', async () => {
     const user = userEvent.setup();
     renderComponent();
 
