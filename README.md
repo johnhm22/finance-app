@@ -65,6 +65,22 @@ PostgreSQL database. This wasn't difficult as I was used to working with a local
 I like it. Quite easy to use and clear docs.  
 Click on the title to be taken to their webpage.
 
+## Testing
+Unit tests have been added for the major components and also for the main page.  
+
+[Vitest](https://vitest.dev/) has been used as a unit testing framework. It is similar to Jest, but from what I have read provides attractive advantages such as speed.  
+
+I like its ability to mock functions and imports, althought I think this exists in Jest as well. For example, if there is a function as a prop, Vitest can be configured to 'mock' or simulate that function. It is similar with imports, Vitest will intercept any import string and a custom return defined.
+
+Also used is [Mock Service Worker](https://mswjs.io/docs/) or msw. This will intercept api calls from a component. I used it on a number of occasions. In one case, when the main page loads it gets the user's portfolio of shares from the database and then for each share calls an external api for the price. Using msw, I intercepted that api call and returned dummy share data with prices. This data is then used to populate the test html of the component that JSDOM has generated. (Note: a fake browser environment is created in NodeJS and it is here that the html for our component exists).  
+
+The tests can be run in the terminal by navigating to the project folder and then executing 'npm run test' followed by the name of the test file.
+
+There are a couple of methods I found very useful when understanding what was going on in my tests.  
+
+The first is scree.debug() which will print out the html in the terminal.  
+
+The second is screen.logTestingPlaygroundURL() which generates a url in the terminal. Upon clicking this, a new tab opens in the browser with a graphic of the generated html. By clicking on certain sections of the html, such as an input field, it will recommend a method that can used in the test to idenfity that field.
 
 ## Problems
 As mentioned above, I was disappointed not to be able to use elephantsql, but a local db worked out fine.  
