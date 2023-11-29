@@ -7,7 +7,6 @@ import { AddShareForm, IShareDataToEdit } from '@/types';
 
 import Edit from '../components/EditShare';
 import AddShare from '../components/AddShare';
-import { findTicker } from '../utils/ticker.search.helper';
 import { useGlobalContext } from '../components/UserContext';
 import Button from '../components/Button';
 import { decimalFormatter } from '../utils/numberFormat.helper';
@@ -329,7 +328,7 @@ const Page = () => {
                   <Image
                     className='cursor-pointer'
                     src='./trash-icon.svg'
-                    alt='edit'
+                    alt='delete'
                     width={35}
                     height={35}
                     onClick={() => handleDelete(data.id)}
