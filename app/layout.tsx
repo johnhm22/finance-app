@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Navbar from './components/Navbar';
 import './globals.css';
 import { UserIdProvider } from './components/UserContext';
+import { ToastProvider } from './components/ToastProvider';
 
 export const metadata: Metadata = {
   title: 'My finance app',
@@ -36,8 +37,10 @@ export default function RootLayout({
     <html lang='en'>
       <body className='relative'>
         <UserIdProvider>
-          <Navbar />
-          {children}
+          <ToastProvider>
+            <Navbar />
+            {children}
+          </ToastProvider>
         </UserIdProvider>
       </body>
     </html>
