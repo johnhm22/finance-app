@@ -5,7 +5,6 @@ import { ILoginForm, LoginErrors } from '@/types';
 import Input from './Input';
 import ButtonLarge from './ButtonLarge';
 import { validateLogin } from '../validations/validation-functions/auth.validations';
-import ActiveInvestor from './ActiveInvestor';
 import Card from './Card';
 
 interface IProps {
