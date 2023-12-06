@@ -18,12 +18,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
     if (!user) {
-      return NextResponse.json({ message: 'User or password incorrect' });
+      return NextResponse.json({ message: 'Username or password incorrect' });
     }
     const isPasswordMatch =
       password && (await bcrypt.compare(password, user.password));
     if (!isPasswordMatch) {
-      return NextResponse.json({ message: 'User or password incorrect' });
+      return NextResponse.json({ message: 'Username or password incorrect' });
     }
     const updatedUser = {
       id: user.id,
