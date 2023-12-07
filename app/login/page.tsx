@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import Login from '../components/Login';
 import { ILoginForm } from '@/types';
@@ -24,12 +25,16 @@ const Page = () => {
           username,
           password,
         },
-      });
-      if (user.status === 200) {
+      });      
+      if (user.data.message === 'login successful') {
         const payload = await getUserId();
         setPayloadData(payload);
+        router.push('./home');
+      } else {
+        toast.error('Log in details incorrect', {
+          style: { color: 'red' },
+        });
       }
-      router.push('./home');
     } catch (error) {
       console.log(error);
     }
