@@ -42,6 +42,12 @@ const Navbar = () => {
               </Link>
             </>
           )}
+          {/* <Link
+            href='/contact-us'
+            className='flex justify-center text-white font-semibold px-4 py-1 rounded-full bg-blue-700 items-center text-xs md:text-sm'
+          >
+            Contact us
+          </Link> */}
         </div>
       </nav>
     </header>
