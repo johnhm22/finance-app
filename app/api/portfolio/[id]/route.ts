@@ -22,7 +22,7 @@ export async function GET(
       },
     });
 
-    if (stocksHeld) {
+    if (stocksHeld.length) {
       const symbolArray: string[] = [];
 
       stocksHeld.forEach((stock) => {
