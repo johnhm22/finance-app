@@ -59,6 +59,7 @@ const Login = ({ onLogin }: IProps) => {
                   label='Username'
                   name='username'
                   type='text'
+                  value={loginForm.username}
                   placeholder='username'
                   onChange={handleChange}
                   errors={errors?.username}
@@ -69,6 +70,7 @@ const Login = ({ onLogin }: IProps) => {
                   label='Password'
                   name='password'
                   type='text'
+                  value={loginForm.password}
                   placeholder='password'
                   onChange={handleChange}
                   errors={errors?.password}
