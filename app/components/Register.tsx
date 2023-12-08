@@ -65,6 +65,7 @@ const Register = ({ onRegister }: IProps) => {
                   placeholder='Username'
                   onChange={handleChange}
                   type='text'
+                  value={registerForm.username}
                   errors={errors?.username}
                 />
               </div>
@@ -75,6 +76,7 @@ const Register = ({ onRegister }: IProps) => {
                   placeholder='First name'
                   onChange={handleChange}
                   type='text'
+                  value={registerForm.firstName}
                   errors={errors?.firstName}
                 />
               </div>
@@ -85,6 +87,7 @@ const Register = ({ onRegister }: IProps) => {
                   placeholder='Last name'
                   onChange={handleChange}
                   type='text'
+                  value={registerForm.lastName}
                   errors={errors?.lastName}
                 />
               </div>
@@ -95,6 +98,7 @@ const Register = ({ onRegister }: IProps) => {
                   placeholder='Password'
                   onChange={handleChange}
                   type='text'
+                  value={registerForm.password}
                   errors={errors?.password}
                 />
               </div>
