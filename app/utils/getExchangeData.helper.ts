@@ -8,13 +8,14 @@ type ExchangeData = {
       symbol: string;
       exchange: string;
       open: number;
-    }
+    },
   ];
 };
 
 export const getExchangeData = async (): Promise<ExchangeData[]> => {
   try {
     const result = await Promise.all([
+      //available on all plans
       axios({
         method: 'GET',
         url: `https://api.marketstack.com/v1/eod?access_key=${process.env.MARKETSTACK_ACCESS_KEY}&symbols=FTSE.INDX&limit=1`,
@@ -28,6 +29,8 @@ export const getExchangeData = async (): Promise<ExchangeData[]> => {
         url: `https://api.marketstack.com/v1/eod?access_key=${process.env.MARKETSTACK_ACCESS_KEY}&symbols=DJI.INDX&limit=1`,
       }),
     ]);
+
+    
 
     const data = result.map((res) => res.data);
     const resolvedData = data.flat();
