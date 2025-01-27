@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const result = await Promise.all([
+      //all three apis below available on all plans
       axios({
         method: 'GET',
         url: `https://api.marketstack.com/v1/eod?access_key=${process.env.MARKETSTACK_ACCESS_KEY}&symbols=FTSE.INDX&limit=1`,

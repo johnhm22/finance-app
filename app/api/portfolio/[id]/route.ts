@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const { id } = params;
   try {
@@ -31,6 +31,7 @@ export async function GET(
 
       const quoteCall = await axios({
         url: `https://api.marketstack.com/v1/eod/latest?access_key=${
+          // available on all plans
           process.env.MARKETSTACK_ACCESS_KEY
         }&symbols=${symbolArray.toString()}`,
       });
