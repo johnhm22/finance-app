@@ -11,7 +11,7 @@ enum ExchangeAcronym {
 }
 
 const Landing = async () => {
-  const exchangeData = await getExchangeData();
+  // const exchangeData = await getExchangeData();
   const currencyData = await getCurrencyData();
 
   return (
@@ -58,7 +58,7 @@ const Landing = async () => {
       </div>
       <div className='flex flex-1 md:flex-row flex-col justify-between h-[30rem]'>
         <table className='table-auto h-1/2 ml-10 mt-5 text-xl mr-10'>
-          <tbody>
+          {/* <tbody>
             {exchangeData?.map((exchange) => (
               <tr
                 key={exchange.data[0].symbol}
@@ -102,7 +102,7 @@ const Landing = async () => {
                 )}
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </table>
         <table className='table-auto h-1/2 ml-10 mt-5 mb-5 text-xl mr-10'>
           <tbody>
